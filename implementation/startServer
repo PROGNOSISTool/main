@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+cargo run --manifest-path=tools/apps/Cargo.toml --bin quiche-server -- \
+    --cert tools/apps/src/bin/cert.crt \
+    --key tools/apps/src/bin/cert.key \
+    --listen 0.0.0.0:4433 \
+    --name server \
+    --root ./root \
+    --no-grease \
+    --quick-ack
