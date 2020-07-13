@@ -1,8 +1,8 @@
-# QUIC Learner
+g QUIC Learner
 ### Code and resources for model learning of QUIC implementations
 
 ```
-implementation -> Sample full QUIC Implementation in Rust: Cloudflare Quiche on quic-draft-27.
-tracker -> Tool used to test QUIC implementations, includes a minimal Go implementation that might be useful.
+implementation -> QUIC server script based on Cloudflare Quiche.
+adapter -> Prototype adapter for QUIC learning.
 resources -> Official IETF Drafts and related papers.
 ```
