@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-cargo run --manifest-path=tools/apps/Cargo.toml --bin quiche-client -- \
-    --no-grease \
-    --no-verify \
-    --quick-ack \
-    https://server:4433/
