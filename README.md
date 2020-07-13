@@ -1,4 +1,4 @@
-g QUIC Learner
+# QUIC Learner
 ### Code and resources for model learning of QUIC implementations
 
 ```
