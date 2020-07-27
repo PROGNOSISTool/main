@@ -3,6 +3,7 @@
 
 ```
 implementation -> QUIC server script based on Cloudflare Quiche.
-adapter -> Prototype adapter for QUIC learning.
+adapter -> Go based adapter for QUIC learning.
+learner -> Java based learner for QUIC learning.
 resources -> Official IETF Drafts and related papers.
 ```
