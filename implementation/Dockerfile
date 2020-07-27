@@ -20,14 +20,16 @@ RUN apt-get update && apt-get install -y ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=build \
-     /build/target/debug/quiche-client \
      /build/target/debug/quiche-server \
      /usr/local/bin/
 
 COPY --from=build \
      /build/src/bin/cert.crt \
      /build/src/bin/cert.key \
+     /build/src/bin/rootCA.crt \
      ./crypto/
+
+RUN cp ./crypto/rootCA.crt /usr/local/share/ca-certificates/ && update-ca-certificates
 
 ENV PATH="/usr/local/bin/:${PATH}"
 ENV RUST_LOG=info
@@ -37,6 +39,7 @@ RUN mkdir web && echo "Hello World!" > web/index.html
 ENTRYPOINT ["quiche-server"]
 CMD ["--cert", "./crypto/cert.crt", \
     "--key", "./crypto/cert.key", \
+    "--name", "quic.tiferrei.com", \
     "--listen", "0.0.0.0:4433", \
     "--root", "./web", \
     "--no-grease", \
