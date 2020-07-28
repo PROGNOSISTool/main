@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    build: ./implementation
+    build: ./implementations/quiche
     init: true
     ports:
       - "4433:4433"
