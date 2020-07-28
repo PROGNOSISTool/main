@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  implementation:
+    build: ./implementation
+    init: true
+    ports:
+      - "4433:4433"
+    environment:
+      - RUST_BACKTRACE=1
+  adapter:
+    build: ./adapter
+    ports:
+      - "3333:3333"
+    links:
+      - implementation
+  learner:
+    build: ./learner
+    links:
+      - adapter
+    volumes:
+      - ./output/:/usr/src/learner/output/
