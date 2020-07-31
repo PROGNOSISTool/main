@@ -1,0 +1,4 @@
+copy this to obtain the regex describing any text between two inputs of a trace:
+[^\r\n]*[\r\n][^\r\n]*[\r\n][^\r\n]*[\r\n][^\r\n]*[\r\n]
+
+

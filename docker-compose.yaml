@@ -3,6 +3,7 @@ services:
   implementation:
     build: ./implementations/quiche
     init: true
+    tty: true
     ports:
       - "4433:4433"
     environment:
@@ -13,9 +14,11 @@ services:
       - "3333:3333"
     links:
       - implementation
+    volumes:
+      - ./output/adapter/:/root
   learner:
     build: ./learner
     links:
       - adapter
     volumes:
-      - ./output/:/usr/src/learner/output/
+      - ./output/learner/:/usr/src/learner/output/

@@ -24,9 +24,9 @@ COPY --from=build \
      /usr/local/bin/
 
 COPY --from=build \
-     /build/src/bin/cert.crt \
-     /build/src/bin/cert.key \
-     /build/src/bin/rootCA.crt \
+     /build/src/bin/crypto/cert.crt \
+     /build/src/bin/crypto/cert.key \
+     /build/src/bin/crypto/rootCA.crt \
      ./crypto/
 
 RUN cp ./crypto/rootCA.crt /usr/local/share/ca-certificates/ && update-ca-certificates

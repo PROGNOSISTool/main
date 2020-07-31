@@ -4,3 +4,6 @@
 [submodule "learner"]
 	path = learner
 	url = git@github.com:UCL-PPLV/tcp-learner.git
+[submodule "implementations/msquic"]
+	path = implementations/msquic
+	url = https://github.com/microsoft/msquic.git
