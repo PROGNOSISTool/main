@@ -1,18 +1,3 @@
-learningParams:
-    seed: 1299777356020
-    minValue: 0
-    maxValue: 300
-    minTraceLength: 1
-    maxTraceLength: 2
-    maxNumTraces: 1000000
-    sutInterface: sutinfo.yaml
-# windows/freebsd/linux
-    mapper: linux
-sutParams:
-# number of times each query(test) is run, so as to
-# add confidence that there were no missed/wrong responses
-    runsPerQuery: 3
-    confidence: 85
-    sutPort: 3333
-    sutIP: adapter
-    oracle: client
+version https://git-lfs.github.com/spec/v1
+oid sha256:d3cf5a7cce1f8abd760cd8a8a0f1950ae1133b5fc83ab7f60c4264cb04d89360
+size 434

@@ -1,11 +1,3 @@
-name: QUIC
-inputInterfaces:
-  INITIAL(0xff00001d)[CRYPTO]: []
-  INITIAL(0xff00001d)[ACK]: []
-  HANDSHAKE(0xff00001d)[ACK,CRYPTO]: []
-  SHORT(0xff00001d)[STREAM]: []
-outputInterfaces:
-  INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]: []
-  HANDSHAKE(0xff00001d)[ACK]+SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]: []
-  SHORT(0xff00001d)[ACK,STREAM]: []
-constants: []
+version https://git-lfs.github.com/spec/v1
+oid sha256:4575d8316c6d8b2a6ea25283de8910318bc7f1b9841826dcf5c166dd2cdbe793
+size 435

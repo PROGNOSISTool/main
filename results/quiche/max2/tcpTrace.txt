@@ -1,4 +1,3 @@
-copy this to obtain the regex describing any text between two inputs of a trace:
-[^\r\n]*[\r\n][^\r\n]*[\r\n][^\r\n]*[\r\n][^\r\n]*[\r\n]
-
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:18aeac92c990551b0c19d76d03b759039dcfc651641839f630d601fcd0c98b2d
+size 140
