@@ -1,3 +1,47 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:41198ee4b8fd27e2e05f98c83a6662688e630da2cbcb923c41dedfadb2bb126d
-size 4589
+digraph g {
+
+	s0 [shape="circle" label="0"];
+	s1 [shape="circle" label="1"];
+	s2 [shape="circle" label="2"];
+	s3 [shape="circle" label="3"];
+	s4 [shape="circle" label="4"];
+	s5 [shape="circle" label="5"];
+	s6 [shape="circle" label="6"];
+	s7 [shape="circle" label="7"];
+	s0 -> s0 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / EMPTY"];
+	s0 -> s1 [label="INITIAL(0xff00001d)[ACK,PING] / RETRY()[]"];
+	s0 -> s1 [label="INITIAL(0xff00001d)[CRYPTO] / RETRY()[]"];
+	s0 -> s0 [label="SHORT(0xff00001d)[STREAM] / EMPTY"];
+	s1 -> s2 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / EMPTY"];
+	s1 -> s1 [label="INITIAL(0xff00001d)[ACK,PING] / INITIAL(0xff00001d)[ACK]"];
+	s1 -> s3 [label="INITIAL(0xff00001d)[CRYPTO] / INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]"];
+	s1 -> s1 [label="SHORT(0xff00001d)[STREAM] / EMPTY"];
+	s2 -> s2 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / EMPTY"];
+	s2 -> s2 [label="INITIAL(0xff00001d)[ACK,PING] / INITIAL(0xff00001d)[ACK]"];
+	s2 -> s4 [label="INITIAL(0xff00001d)[CRYPTO] / INITIAL(0xff00001d)[ACK,CRYPTO]"];
+	s2 -> s2 [label="SHORT(0xff00001d)[STREAM] / EMPTY"];
+	s3 -> s5 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK]"];
+	s3 -> s3 [label="INITIAL(0xff00001d)[ACK,PING] / INITIAL(0xff00001d)[ACK]"];
+	s3 -> s6 [label="INITIAL(0xff00001d)[CRYPTO] / HANDSHAKE(0xff00001d)[CONNECTION_CLOSE]"];
+	s3 -> s3 [label="SHORT(0xff00001d)[STREAM] / EMPTY"];
+	s4 -> s4 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / EMPTY"];
+	s4 -> s4 [label="INITIAL(0xff00001d)[ACK,PING] / INITIAL(0xff00001d)[ACK]"];
+	s4 -> s6 [label="INITIAL(0xff00001d)[CRYPTO] / EMPTY"];
+	s4 -> s4 [label="SHORT(0xff00001d)[STREAM] / EMPTY"];
+	s5 -> s6 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / SHORT(0xff00001d)[CONNECTION_CLOSE]"];
+	s5 -> s5 [label="INITIAL(0xff00001d)[ACK,PING] / EMPTY"];
+	s5 -> s5 [label="INITIAL(0xff00001d)[CRYPTO] / EMPTY"];
+	s5 -> s7 [label="SHORT(0xff00001d)[STREAM] / SHORT(0xff00001d)[ACK,STREAM]"];
+	s6 -> s6 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / EMPTY"];
+	s6 -> s6 [label="INITIAL(0xff00001d)[ACK,PING] / EMPTY"];
+	s6 -> s6 [label="INITIAL(0xff00001d)[CRYPTO] / EMPTY"];
+	s6 -> s6 [label="SHORT(0xff00001d)[STREAM] / EMPTY"];
+	s7 -> s6 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / SHORT(0xff00001d)[CONNECTION_CLOSE]"];
+	s7 -> s7 [label="INITIAL(0xff00001d)[ACK,PING] / EMPTY"];
+	s7 -> s7 [label="INITIAL(0xff00001d)[CRYPTO] / EMPTY"];
+	s7 -> s7 [label="SHORT(0xff00001d)[STREAM] / EMPTY"];
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> s0;
+
+}

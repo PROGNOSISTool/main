@@ -1,0 +1,236 @@
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, RETRY()[]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, RETRY()[]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, RETRY()[]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, RETRY()[]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, HANDSHAKE(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, HANDSHAKE(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, SHORT(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, SHORT(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, SHORT(0xff00001d)[ACK,STREAM]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], EMPTY, SHORT(0xff00001d)[ACK,STREAM]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[ACK]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], HANDSHAKE(0xff00001d)[CONNECTION_CLOSE], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, SHORT(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, SHORT(0xff00001d)[ACK]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, SHORT(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, SHORT(0xff00001d)[ACK]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[ACK], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[ACK], SHORT(0xff00001d)[CONNECTION_CLOSE]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[ACK], SHORT(0xff00001d)[ACK]]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[ACK], EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 2 attempts:
+[RETRY()[], INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], SHORT(0xff00001d)[HANDSHAKE_DONE,CRYPTO]+HANDSHAKE(0xff00001d)[ACK], SHORT(0xff00001d)[ACK,STREAM], SHORT(0xff00001d)[CONNECTION_CLOSE], EMPTY]
+Seed: 1299777356020
+Successful run.
+Learner Finished!
+ERROR (learner.Main;copyInputsToOutputFolder;-1): Could not find input folder "input", so not copying 

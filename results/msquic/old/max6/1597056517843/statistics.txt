@@ -1,0 +1,18 @@
+Running time of membership queries: 1166599ms.
+Running time of membership queries: 330504ms.
+Running time of membership queries: 1435995ms.
+
+
+		STATISTICS SUMMARY:
+Total running time: -1597056518284ms.
+Total time Membership queries: 2933098
+Total time Equivalence queries: 782019
+Total number of runs: 4
+Total Membership queries: 596
+Total Equivalence queries: 1163
+Total unique Equivalence queries: 217
+Number of equivalence queries per hypothesis:
+hyp 0: 0
+hyp 1: 0
+hyp 2: 0
+

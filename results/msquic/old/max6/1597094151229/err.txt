@@ -1,0 +1,4 @@
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 3 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, EMPTY]
+ERROR (sutInterface.ProbablisticOracle;processQuery;-1): Concluded unanimously in 3 attempts:
+[RETRY()[], EMPTY, INITIAL(0xff00001d)[ACK,CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO], EMPTY, EMPTY, INITIAL(0xff00001d)[ACK]+HANDSHAKE(0xff00001d)[CRYPTO]+HANDSHAKE(0xff00001d)[CRYPTO]]
