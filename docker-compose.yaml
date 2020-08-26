@@ -5,11 +5,12 @@ services:
     init: true
     tty: true
     ports:
-      - "4433:4433"
+      - "4433:4433/udp"
     environment:
       - RUST_BACKTRACE=1
   adapter:
-    build: ./adapter
+    build:
+      context: ./adapter
     ports:
       - "3333:3333"
     links:

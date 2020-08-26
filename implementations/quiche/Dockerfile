@@ -43,4 +43,5 @@ CMD ["--cert", "./crypto/cert.crt", \
     "--listen", "0.0.0.0:4433", \
     "--root", "./web", \
     "--no-grease", \
+    "--no-retry", \
     "--quick-ack"]

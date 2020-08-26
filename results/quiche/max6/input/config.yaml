@@ -16,4 +16,3 @@ sulConfig:
     maxAttempts: 200
     sutPort: 3333
     sutIP: 127.0.0.1
-    oracle: client
