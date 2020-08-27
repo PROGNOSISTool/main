@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    build: ./implementations/quiche
+    image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:quiche
     init: true
     tty: true
     ports:
