@@ -11,6 +11,8 @@ services:
   adapter:
     build:
       context: ./adapter
+    environment:
+      - HTTP3=0
     ports:
       - "3333:3333"
     links:
