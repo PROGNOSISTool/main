@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:googlequic
+    image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:msquic
     init: true
     tty: true
     ports:
@@ -12,7 +12,8 @@ services:
     build:
       context: ./adapter
     environment:
-      - HTTP3=1
+      - HTTP3=0
+      - PERFORMANCE_MODE=0
     ports:
       - "3333:3333"
     links:
