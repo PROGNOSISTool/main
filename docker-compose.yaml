@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:msquic
+    image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:quiche
     init: true
     tty: true
     ports:
