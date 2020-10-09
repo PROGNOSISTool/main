@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:quiche
+    image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:googlequic
     init: true
     tty: true
     ports:
@@ -12,8 +12,7 @@ services:
     build:
       context: ./adapter
     environment:
-      - HTTP3=0
-      - PERFORMANCE_MODE=0
+      - HTTP3=1
     ports:
       - "3333:3333"
     links:

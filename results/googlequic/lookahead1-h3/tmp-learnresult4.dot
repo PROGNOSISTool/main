@@ -1,0 +1,37 @@
+digraph g {
+
+	s0 [shape="circle" label="s0"];
+	s1 [shape="circle" label="s1"];
+	s2 [shape="circle" label="s2"];
+	s3 [shape="circle" label="s3"];
+	s4 [shape="circle" label="s4"];
+	s5 [shape="circle" label="s5"];
+	s0 -> s0 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / {}"];
+	s0 -> s3 [label="INITIAL(0xff00001d)[ACK,PING] / {}"];
+	s0 -> s1 [label="INITIAL(0xff00001d)[CRYPTO] / {HANDSHAKE(0xff00001d)[CRYPTO],HANDSHAKE(0xff00001d)[CRYPTO],INITIAL(0xff00001d)[ACK,CRYPTO],SHORT(0xff00001d)[STREAM]}"];
+	s0 -> s0 [label="SHORT(0xff00001d)[ACK,STREAM] / {}"];
+	s1 -> s2 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / {SHORT(0xff00001d)[CRYPTO],SHORT(0xff00001d)[HANDSHAKE_DONE]}"];
+	s1 -> s1 [label="INITIAL(0xff00001d)[ACK,PING] / {INITIAL(0xff00001d)[ACK]}"];
+	s1 -> s4 [label="INITIAL(0xff00001d)[CRYPTO] / {HANDSHAKE(0xff00001d)[CONNECTION_CLOSE],INITIAL(0xff00001d)[ACK,CONNECTION_CLOSE],SHORT(0xff00001d)[CONNECTION_CLOSE]}"];
+	s1 -> s1 [label="SHORT(0xff00001d)[ACK,STREAM] / {}"];
+	s2 -> s2 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / {}"];
+	s2 -> s2 [label="INITIAL(0xff00001d)[ACK,PING] / {}"];
+	s2 -> s2 [label="INITIAL(0xff00001d)[CRYPTO] / {}"];
+	s2 -> s5 [label="SHORT(0xff00001d)[ACK,STREAM] / {SHORT(0xff00001d)[ACK]}"];
+	s3 -> s3 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / {}"];
+	s3 -> s3 [label="INITIAL(0xff00001d)[ACK,PING] / {}"];
+	s3 -> s4 [label="INITIAL(0xff00001d)[CRYPTO] / {HANDSHAKE(0xff00001d)[CONNECTION_CLOSE],HANDSHAKE(0xff00001d)[CRYPTO],HANDSHAKE(0xff00001d)[CRYPTO],INITIAL(0xff00001d)[ACK,CONNECTION_CLOSE],INITIAL(0xff00001d)[ACK,CRYPTO],SHORT(0xff00001d)[CONNECTION_CLOSE],SHORT(0xff00001d)[STREAM]}"];
+	s3 -> s3 [label="SHORT(0xff00001d)[ACK,STREAM] / {}"];
+	s4 -> s4 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / {}"];
+	s4 -> s4 [label="INITIAL(0xff00001d)[ACK,PING] / {}"];
+	s4 -> s4 [label="INITIAL(0xff00001d)[CRYPTO] / {}"];
+	s4 -> s4 [label="SHORT(0xff00001d)[ACK,STREAM] / {}"];
+	s5 -> s5 [label="HANDSHAKE(0xff00001d)[ACK,CRYPTO] / {}"];
+	s5 -> s5 [label="INITIAL(0xff00001d)[ACK,PING] / {}"];
+	s5 -> s5 [label="INITIAL(0xff00001d)[CRYPTO] / {}"];
+	s5 -> s5 [label="SHORT(0xff00001d)[ACK,STREAM] / {SHORT(0xff00001d)[ACK,STREAM]}"];
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> s0;
+
+}
