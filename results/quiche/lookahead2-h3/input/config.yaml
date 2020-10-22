@@ -1,0 +1,18 @@
+learningParams:
+    seed: 1299777356020
+    minValue: 0
+    maxValue: 300
+    minTraceLength: 1
+    maxTraceLength: 6
+    maxNumTraces: 500000
+    sutInterface: sutinfo.yaml
+# windows/freebsd/linux
+    mapper: linux
+sulConfig:
+# number of times each query(test) is run, so as to
+# add confidence that there were no missed/wrong responses
+    runsPerQuery: 3
+    confidence: 85
+    maxAttempts: 50
+    sutPort: 3333
+    sutIP: 127.0.0.1

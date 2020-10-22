@@ -7,3 +7,6 @@
 [submodule "implementations/msquic"]
 	path = implementations/msquic
 	url = https://github.com/microsoft/msquic.git
+[submodule "implementations/proxygen"]
+	path = implementations/proxygen
+	url = https://github.com/facebook/proxygen.git
