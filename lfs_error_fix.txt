@@ -1,0 +1,13 @@
+I've had similar issues in the past and I think there may be a potential bug in cloning with git lfs (Still to be determined). You can try this method of fetching the repo, which is in fact faster too:
+
+// Skip smudge - We'll download binary files later in a faster batch git lfs install --skip-smudge
+
+// Do git clone here git clone ...
+
+// Fetch all the binary files in the new clone git lfs pull
+
+// Reinstate smudge git lfs install --force
+
+This only needs to be done once to initialize the clone for the first time.
+
+Please do test it and let me know if it fixes it.

@@ -1,0 +1,37 @@
+\begin{definition}{Abstract Symbol Grammar P}
+\begin{grammar}
+<packet> ::= <packet_type> `(' <packet_version> `)' `[' <packet_frames> `]' | `'
+
+<packet_type> ::= `INITIAL' | `HANDSHAKE' | `SHORT' | `ZERO' | `VERNEG' | `RETRY' | `RESET'
+
+<packet_version> ::= <version> | `'
+
+<version> ::= `0' `x' <hex_symbol>$^8$
+
+<hex_symbol> ::= `a' | `b' | `c' | `d' | `e' | `f' | `0' | `1' | `2' | `3' | `4' | `5' | `6' | `7' | `8' | `9'
+
+<packet_frames> ::= <frames> | `'
+
+<frames> ::= <frame_type> | <frames> `,' <frame_type>
+
+<frame_type> ::= `PING' | `ACK' | `ACK_ECN' | `RESET_STREAM' | `STOP_SENDING' | `CRYPTO' | `NEW_TOKEN' | \linebreak
+`STREAM' | `MAX_DATA' | `MAX_STREAM_DATA' | `MAX_STREAMS' | \linebreak
+`DATA_BLOCKED' | `STREAM_DATA_BLOCKED' | `STREAMS_BLOCKED' | `NEW_CONNECTION_ID' | \linebreak
+`RETIRE_CONNECTION_ID' | `PATH_CHALLENGE' | `PATH_RESPONSE' | `CONNECTION_CLOSE' | \linebreak
+`APPLICATION_CLOSE' | `HANDSHAKE_DONE'
+
+\end{grammar}
+\end{definition}
+
+\begin{definition}
+The learning problem is to take an instance of a QUIC implementation and be able to learn in black box a Mealy Machine from queries that provides an abstraction that is detailed and expressive enough to accurately verify relevant properties.
+
+We define the Mealy Machine learned as a tuple $(S, S_0, \Sigma, \Lambda, T, G)$. 
+Where S is the learned finite set of states. 
+$S_0$ is the initial state such that $S_0 \in S$.
+$T$ is the transition function $T \colon S \times \Sigma \to S$.
+$G$ is the output function $G \colon S \times \Sigma \to \Lambda$.
+$\Sigma$ is the input alphabet given to the learner to observe such that $\Sigma \subseteq L(P)$. 
+$\Lambda$ is the output alphabet constructed by the learner from observing the outputs to respective input queries from $\Sigma$ such that $\Lambda \subseteq 2^{L(P)}$, as an input abstract symbol has a set of abstract symbols as its output.
+\end{definition}
+

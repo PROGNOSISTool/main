@@ -1,0 +1,11 @@
+
+\begin{algorithm}[H]
+% \SetAlgoLined
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\Input{A system under learning $\mathcal{S}$ and an exploit goal $\mathcal{E}$}
+\Output{Returns a failure, a exploitive trace, or a proof of non-exploit on the learned model}
+get learned NFA, $\mathcal{N}$, with LearnLib($\mathcal{S}$)\;
+get synthesized model or error $\mathcal{M}$ with CEGIS($\mathcal{N}$, $\mathcal{S}$), and halt if error\;
+return either exploitive trace or proof of non-exploit of synthesized model with ProblemFinder($\mathcal{M}$, $\mathcal{E}$). 
+\end{algorithm}
