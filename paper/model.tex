@@ -1,0 +1,45 @@
+\begin{definition}[Variable Set]
+A variable set is a set of labels $V$. A variable set can be interpreted with an interpretation function, taking labels to integers: $\llbracket \cdot \rrbracket : V \to \mathbb{Z}$.
+\end{definition}
+
+\begin{definition}[Linear Relation Set]
+A linear relation set is a $4-$tuple $(L, O, C, R)$,
+where $L$, $C$, and $R$ are variable sets,
+and where $O : (\B)^{\Z \times \Z}$ is a set of binary operators over the integers to the booleans.
+It is defined as the following set of expressions:
+$$\{l \oplus r + c : l \in L, \oplus \in O, c \in C, r \in R\}$$
+\end{definition}
+
+\begin{definition}[Transition]
+A transition is considered over four variable sets:
+\begin{itemize}
+\item $I$, the input variable set, which are the set of fields in each input token
+\item $O$, the output variable set, which are the set of fields in each output token
+\item $R$, the register set, which is the set of registers
+\item $C$, the constant set, a set of background constants
+\end{itemize}
+These variable labels are used in three linear relation sets:
+\begin{itemize}
+    \item $\phi = I \times \{\le, \ge\} \times R \times C$, which intuitively is the set describing the guard of the transition.
+    \item $\chi = R'\times \{=\}\times R\times C$, which intuitively is the set describing the update to the registers, with $R'$ being the same set as $R$, but updated versions.
+    \item $\chi = R'\times \{=\}\times O\times C$, which intuitively is the set describing the output values. 
+\end{itemize}
+The three sets are used in transition denoted as follows:
+$$ p \xrightarrow{\phi / \chi / \psi} q$$
+Such that if in state $p$ and $\phi$ is true, we go to state $q$ and require $\chi \wedge \psi$.
+\end{definition}
+
+\begin{definition}[$w$-machine]
+A $w$-machine is given by a tuple:
+$(I, O, R, r_0, Q, q_0, \Delta, F)$
+where $I$ is the set of input variable labels,
+$O$ is the set of output variable labels,
+$R$ is the set of register variable labels,
+$r_0 : R \to \mathbb{Z}$ takes registers to their initial values,
+$Q$ is the set of states,
+$q_0$ is the initial state,
+$F \subseteq Q$ is the set of final states,
+and transitions as defined in the previous given by $\Delta \subseteq Q \times \phi \times \chi \times \psi \times Q$.
+Provided the actions defined for transitions (including the update of registers),
+the execution of the machine is what you would expect from a transducer.
+\end{definition}
