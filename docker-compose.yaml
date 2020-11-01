@@ -2,10 +2,14 @@ version: '3.8'
 services:
   implementation:
 <<<<<<< HEAD
+<<<<<<< HEAD
     image: docker.pkg.github.com/ucl-pplv/quic-learner/implementation:quiche
 =======
     image: docker.pkg.github.com/ucl-pplv/quic/implementation:tcp
 >>>>>>> 089b51c... feat: Add TCP
+=======
+    image: docker.pkg.github.com/ucl-pplv/quic/implementation:proxygen
+>>>>>>> 3ba2e84... feat: TCP fixes
     init: true
     tty: true
     privileged: true
@@ -14,24 +18,21 @@ services:
       - "44344:44344/tcp"
     environment:
       - RUST_BACKTRACE=1
-    cap_add:
-      - ALL
     sysctls:
       net.ipv4.tcp_syncookies: 0
   adapter:
     build:
-      #context: ./adapter
-      context: ./tcp-adapter
+      context: ./adapter
+      #context: ./tcp-adapter
     environment:
       - HTTP3=1
+    privileged: true
     ports:
       - "3333:3333"
     links:
       - implementation
     volumes:
       - ./output/adapter/:/root
-    cap_add:
-      - ALL
     sysctls:
       net.ipv4.tcp_syncookies: 0
   learner:

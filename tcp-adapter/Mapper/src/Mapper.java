@@ -188,7 +188,6 @@ public class Mapper implements MapperInterface {
 	@Override
 	public void sendReset() {
 		this.handler.reset();
-		this.handler.reset();
 	}
 
 	/* (non-Javadoc)
@@ -218,11 +217,15 @@ public class Mapper implements MapperInterface {
 				Matcher matcher = pattern.matcher(command);
 				while(matcher.find()) {
 					if (request[0].equals("ABSTRACT")) {
-						int payloadLength = 0;
-						if (!matcher.group(4).equals("?")) {
-							payloadLength = Integer.parseInt(matcher.group(4));
+						if (matcher.group(1).equals("RST")) {
+							System.out.println(mapper.processOutgoingReset());
+						} else {
+							int payloadLength = 0;
+							if (!matcher.group(4).equals("?")) {
+								payloadLength = Integer.parseInt(matcher.group(4));
+							}
+							System.out.println(mapper.processOutgoingRequest(new FlagSet(matcher.group(1)), Validity.VALID, Validity.VALID, payloadLength));
 						}
-						System.out.println(mapper.processOutgoingRequest(new FlagSet(matcher.group(1)), Validity.VALID, Validity.VALID, payloadLength));
 					} else if (request[0].equals("CONCRETE")) {
 						System.out.println(mapper.processIncomingResponse(new FlagSet(matcher.group(1)), Long.parseLong(matcher.group(2)), Long.parseLong(matcher.group(3)), Integer.parseInt(matcher.group(4))));
 					} else {

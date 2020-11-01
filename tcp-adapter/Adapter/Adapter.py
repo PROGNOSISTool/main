@@ -9,6 +9,7 @@ from ConcreteSymbol import ConcreteSymbol
 
 import logging
 logging.basicConfig(level=logging.DEBUG,format='%(name)s: %(message)s')
+
 class Adapter:
     mapper: Mapper = Mapper()
     localAddr: str = socket.gethostbyname(socket.gethostname())
@@ -18,7 +19,10 @@ class Adapter:
     logger = logging.getLogger('Adapter')
 
     def reset(self):
+        self.logger.info("Sending RESET...")
+        self.handleQuery("RST(?,?,?)")
         self.mapper.reset()
+        self.logger.info("RESET finished.")
 
     def handleQuery(self, query: str) -> str:
         answers = []
@@ -29,6 +33,9 @@ class Adapter:
             self.logger.info("Abstract Symbol In: " + str(abstractSymbolIn))
 
             packetIn = self.mapper.abstractToConcrete(abstractSymbolIn)
+            if packetIn is None:
+                answers.append(str("TIMEOUT"))
+                continue
 
             concreteSymbolIn = ConcreteSymbol(packet=packetIn)
             self.logger.info("Concrete Symbol In: " + concreteSymbolIn.toJSON())
