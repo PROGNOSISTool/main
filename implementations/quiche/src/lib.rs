@@ -39,6 +39,10 @@ use std::collections::HashMap;
 use std::net;
 use std::path;
 
+use quiche::h3::NameValue;
+
+const MAX_JSON_DUMP_PAYLOAD: usize = 10000;
+
 /// Returns a String containing a pretty printed version of the `buf` slice.
 pub fn hex_dump(buf: &[u8]) -> String {
     let vec: Vec<String> = buf.iter().map(|b| format!("{:02x}", b)).collect();
@@ -52,6 +56,7 @@ pub fn hex_dump(buf: &[u8]) -> String {
 pub mod alpns {
     pub const HTTP_09: [&str; 4] = ["hq-29", "hq-28", "hq-27", "http/0.9"];
     pub const HTTP_3: [&str; 3] = ["h3-29", "h3-28", "h3-27"];
+    pub const SIDUCK: [&str; 2] = ["siduck", "siduck-00"];
 
     pub fn length_prefixed(alpns: &[&str]) -> Vec<u8> {
         let mut out = Vec::new();
@@ -76,18 +81,21 @@ pub struct CommonArgs {
     pub max_stream_data: u64,
     pub max_streams_bidi: u64,
     pub max_streams_uni: u64,
+    pub idle_timeout: u64,
     pub dump_packet_path: Option<String>,
     pub no_grease: bool,
     pub cc_algorithm: String,
     pub disable_hystart: bool,
-    pub quick_ack: bool,
+    pub dgrams_enabled: bool,
+    pub dgram_count: u64,
+    pub dgram_data: String,
 }
 
 /// Creates a new `CommonArgs` structure using the provided [`Docopt`].
 ///
 /// The `Docopt` usage String needs to include the following:
 ///
-/// --http-version VERSION      HTTP version to use
+/// --http-version VERSION      HTTP version to use.
 /// --max-data BYTES            Connection-wide flow control limit.
 /// --max-stream-data BYTES     Per-stream flow control limit.
 /// --max-streams-bidi STREAMS  Number of allowed concurrent streams.
@@ -96,6 +104,9 @@ pub struct CommonArgs {
 /// --no-grease                 Don't send GREASE.
 /// --cc-algorithm NAME         Set a congestion control algorithm.
 /// --disable-hystart           Disable HyStart++.
+/// --dgram-proto PROTO         DATAGRAM application protocol.
+/// --dgram-count COUNT         Number of DATAGRAMs to send.
+///  --dgram-data DATA          DATAGRAM data to send.
 ///
 /// [`Docopt`]: https://docs.rs/docopt/1.1.0/docopt/
 impl Args for CommonArgs {
@@ -103,19 +114,38 @@ impl Args for CommonArgs {
         let args = docopt.parse().unwrap_or_else(|e| e.exit());
 
         let http_version = args.get_str("--http-version");
-        let alpns = match http_version {
-            "HTTP/0.9" => alpns::length_prefixed(&alpns::HTTP_09),
+        let dgram_proto = args.get_str("--dgram-proto");
+        let (alpns, dgrams_enabled) = match (http_version, dgram_proto) {
+            ("HTTP/0.9", "none") =>
+                (alpns::length_prefixed(&alpns::HTTP_09), false),
 
-            "HTTP/3" => alpns::length_prefixed(&alpns::HTTP_3),
+            ("HTTP/0.9", _) =>
+                panic!("Unsupported HTTP version and DATAGRAM protocol."),
 
-            "all" => [
-                alpns::length_prefixed(&alpns::HTTP_3),
-                alpns::length_prefixed(&alpns::HTTP_09),
-            ]
-            .concat(),
+            ("HTTP/3", "none") => (alpns::length_prefixed(&alpns::HTTP_3), false),
 
-            _ => panic!("Unsupported HTTP version"),
+            ("HTTP/3", "oneway") =>
+                (alpns::length_prefixed(&alpns::HTTP_3), true),
+
+            ("all", "none") => (
+                [
+                    alpns::length_prefixed(&alpns::HTTP_3),
+                    alpns::length_prefixed(&alpns::HTTP_09),
+                ]
+                .concat(),
+                false,
+            ),
+
+            // SiDuck is it's own application protocol.
+            (_, "siduck") => (alpns::length_prefixed(&alpns::SIDUCK), true),
+
+            (..) => panic!("Unsupported HTTP version and DATAGRAM protocol."),
         };
+
+        let dgram_count = args.get_str("--dgram-count");
+        let dgram_count = u64::from_str_radix(dgram_count, 10).unwrap();
+
+        let dgram_data = args.get_str("--dgram-data").to_string();
 
         let max_data = args.get_str("--max-data");
         let max_data = u64::from_str_radix(max_data, 10).unwrap();
@@ -129,6 +159,9 @@ impl Args for CommonArgs {
         let max_streams_uni = args.get_str("--max-streams-uni");
         let max_streams_uni = u64::from_str_radix(max_streams_uni, 10).unwrap();
 
+        let idle_timeout = args.get_str("--idle-timeout");
+        let idle_timeout = u64::from_str_radix(idle_timeout, 10).unwrap();
+
         let dump_packet_path = if args.get_str("--dump-packets") != "" {
             Some(args.get_str("--dump-packets").to_string())
         } else {
@@ -141,19 +174,20 @@ impl Args for CommonArgs {
 
         let disable_hystart = args.get_bool("--disable-hystart");
 
-        let quick_ack = args.get_bool("--quick-ack");
-
         CommonArgs {
             alpns,
             max_data,
             max_stream_data,
             max_streams_bidi,
             max_streams_uni,
+            idle_timeout,
             dump_packet_path,
             no_grease,
             cc_algorithm: cc_algorithm.to_string(),
             disable_hystart,
-            quick_ack,
+            dgrams_enabled,
+            dgram_count,
+            dgram_data,
         }
     }
 }
@@ -174,6 +208,10 @@ pub struct Client {
     pub conn: std::pin::Pin<Box<quiche::Connection>>,
 
     pub http_conn: Option<Box<dyn crate::HttpConn>>,
+
+    pub siduck_conn: Option<SiDuckConn>,
+
+    pub app_proto_selected: bool,
 
     pub partial_requests: std::collections::HashMap<u64, PartialRequest>,
 
@@ -243,6 +281,62 @@ pub fn make_qlog_writer(
     }
 }
 
+fn dump_json(reqs: &[Http3Request]) {
+    println!("{{");
+    println!("  \"entries\": [");
+    let mut reqs = reqs.iter().peekable();
+
+    while let Some(req) = reqs.next() {
+        println!("  {{");
+        println!("    \"request\":{{");
+        println!("      \"headers\":[");
+
+        let mut req_hdrs = req.hdrs.iter().peekable();
+        while let Some(h) = req_hdrs.next() {
+            println!("        {{");
+            println!("          \"name\": \"{}\",", h.name());
+            println!("          \"value\": \"{}\"", h.value());
+
+            if req_hdrs.peek().is_some() {
+                println!("        }},");
+            } else {
+                println!("        }}");
+            }
+        }
+        println!("      ]}},");
+
+        println!("    \"response\":{{");
+        println!("      \"headers\":[");
+
+        let mut response_hdrs = req.response_hdrs.iter().peekable();
+        while let Some(h) = response_hdrs.next() {
+            println!("        {{");
+            println!("          \"name\": \"{}\",", h.name());
+            println!(
+                "          \"value\": \"{}\"",
+                h.value().replace("\"", "\\\"")
+            );
+
+            if response_hdrs.peek().is_some() {
+                println!("        }},");
+            } else {
+                println!("        }}");
+            }
+        }
+        println!("      ],");
+        println!("      \"body\": {:?}", req.response_body);
+        println!("    }}");
+
+        if reqs.peek().is_some() {
+            println!("}},");
+        } else {
+            println!("}}");
+        }
+    }
+    println!("]");
+    println!("}}");
+}
+
 pub trait HttpConn {
     fn send_requests(
         &mut self, conn: &mut quiche::Connection, target_path: &Option<String>,
@@ -253,7 +347,7 @@ pub trait HttpConn {
         req_start: &std::time::Instant,
     );
 
-    fn report_incomplete(&self, start: &std::time::Instant);
+    fn report_incomplete(&self, start: &std::time::Instant) -> bool;
 
     fn handle_requests(
         &mut self, conn: &mut std::pin::Pin<Box<quiche::Connection>>,
@@ -266,6 +360,161 @@ pub trait HttpConn {
         &mut self, conn: &mut std::pin::Pin<Box<quiche::Connection>>,
         partial_responses: &mut HashMap<u64, PartialResponse>, stream_id: u64,
     );
+}
+
+pub struct SiDuckConn {
+    quacks_to_make: u64,
+    quack_contents: String,
+    quacks_sent: u64,
+    quacks_acked: u64,
+}
+
+impl SiDuckConn {
+    pub fn new(quacks_to_make: u64, quack_contents: String) -> Self {
+        Self {
+            quacks_to_make,
+            quack_contents,
+            quacks_sent: 0,
+            quacks_acked: 0,
+        }
+    }
+
+    pub fn send_quacks(&mut self, conn: &mut quiche::Connection) {
+        trace!("sending quacks");
+        let mut quacks_done = 0;
+
+        for _ in self.quacks_sent..self.quacks_to_make {
+            info!("sending QUIC DATAGRAM with data {:?}", self.quack_contents);
+
+            match conn.dgram_send(self.quack_contents.as_bytes()) {
+                Ok(v) => v,
+
+                Err(e) => {
+                    error!("failed to send dgram {:?}", e);
+
+                    break;
+                },
+            }
+
+            quacks_done += 1;
+        }
+
+        self.quacks_sent += quacks_done;
+    }
+
+    pub fn handle_quacks(
+        &mut self, conn: &mut quiche::Connection, buf: &mut [u8],
+    ) -> quiche::h3::Result<()> {
+        loop {
+            match conn.dgram_recv(buf) {
+                Ok(len) => {
+                    let data =
+                        unsafe { std::str::from_utf8_unchecked(&buf[..len]) };
+                    info!("Received DATAGRAM data {:?}", data);
+
+                    // TODO
+                    if data != "quack" {
+                        match conn.close(true, 0x101, b"only quacks echo") {
+                            // Already closed.
+                            Ok(_) | Err(quiche::Error::Done) => (),
+
+                            Err(e) => panic!("error closing conn: {:?}", e),
+                        }
+
+                        break;
+                    }
+
+                    match conn.dgram_send(format!("{}-ack", data).as_bytes()) {
+                        Ok(v) => v,
+
+                        Err(quiche::Error::Done) => (),
+
+                        Err(e) => {
+                            error!("failed to send quack ack {:?}", e);
+                            return Err(From::from(e));
+                        },
+                    }
+                },
+
+                Err(quiche::Error::Done) => break,
+
+                Err(e) => {
+                    error!("failure receiving DATAGRAM failure {:?}", e);
+
+                    return Err(From::from(e));
+                },
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn handle_quack_acks(
+        &mut self, conn: &mut quiche::Connection, buf: &mut [u8],
+        start: &std::time::Instant,
+    ) {
+        trace!("handle_quack_acks");
+
+        loop {
+            match conn.dgram_recv(buf) {
+                Ok(len) => {
+                    let data =
+                        unsafe { std::str::from_utf8_unchecked(&buf[..len]) };
+
+                    info!("Received DATAGRAM data {:?}", data);
+                    self.quacks_acked += 1;
+
+                    debug!(
+                        "{}/{} quacks acked",
+                        self.quacks_acked, self.quacks_to_make
+                    );
+
+                    if self.quacks_acked == self.quacks_to_make {
+                        info!(
+                            "{}/{} dgrams(s) received in {:?}, closing...",
+                            self.quacks_acked,
+                            self.quacks_to_make,
+                            start.elapsed()
+                        );
+
+                        match conn.close(true, 0x00, b"kthxbye") {
+                            // Already closed.
+                            Ok(_) | Err(quiche::Error::Done) => (),
+
+                            Err(e) => panic!("error closing conn: {:?}", e),
+                        }
+
+                        break;
+                    }
+                },
+
+                Err(quiche::Error::Done) => {
+                    break;
+                },
+
+                Err(e) => {
+                    error!("failure receiving DATAGRAM failure {:?}", e);
+
+                    break;
+                },
+            }
+        }
+    }
+
+    pub fn report_incomplete(&self, start: &std::time::Instant) -> bool {
+        if self.quacks_acked != self.quacks_to_make {
+            error!(
+                "connection timed out after {:?} and only received {}/{} quack-acks",
+                start.elapsed(),
+                self.quacks_acked,
+                self.quacks_to_make
+            );
+
+            return true;
+        }
+
+        false
+    }
 }
 
 /// Represents an HTTP/0.9 formatted request.
@@ -283,6 +532,8 @@ struct Http3Request {
     cardinal: u64,
     stream_id: Option<u64>,
     hdrs: Vec<quiche::h3::Header>,
+    response_hdrs: Vec<quiche::h3::Header>,
+    response_body: Vec<u8>,
     response_writer: Option<std::io::BufWriter<std::fs::File>>,
 }
 
@@ -432,7 +683,7 @@ impl HttpConn for Http09Conn {
         }
     }
 
-    fn report_incomplete(&self, start: &std::time::Instant) {
+    fn report_incomplete(&self, start: &std::time::Instant) -> bool {
         if self.reqs_complete != self.reqs.len() {
             error!(
                 "connection timed out after {:?} and only completed {}/{} requests",
@@ -440,7 +691,11 @@ impl HttpConn for Http09Conn {
                 self.reqs_complete,
                 self.reqs.len()
             );
+
+            return true;
         }
+
+        false
     }
 
     fn handle_requests(
@@ -583,18 +838,41 @@ impl HttpConn for Http09Conn {
     }
 }
 
+pub struct Http3DgramSender {
+    dgram_count: u64,
+    pub dgram_content: String,
+    pub flow_id: u64,
+    pub dgrams_sent: u64,
+}
+
+impl Http3DgramSender {
+    pub fn new(dgram_count: u64, dgram_content: String, flow_id: u64) -> Self {
+        Self {
+            dgram_count,
+            dgram_content,
+            flow_id,
+            dgrams_sent: 0,
+        }
+    }
+}
+
 pub struct Http3Conn {
     h3_conn: quiche::h3::Connection,
     reqs_sent: usize,
     reqs_complete: usize,
+    largest_processed_request: u64,
     reqs: Vec<Http3Request>,
     body: Option<Vec<u8>>,
+    dump_json: bool,
+    dgram_sender: Option<Http3DgramSender>,
 }
 
 impl Http3Conn {
+    #[allow(clippy::too_many_arguments)]
     pub fn with_urls(
         conn: &mut quiche::Connection, urls: &[url::Url], reqs_cardinal: u64,
         req_headers: &[String], body: &Option<Vec<u8>>, method: &str,
+        dump_json: bool, dgram_sender: Option<Http3DgramSender>,
     ) -> Box<dyn HttpConn> {
         let mut reqs = Vec::new();
         for url in urls {
@@ -641,6 +919,8 @@ impl Http3Conn {
                     url: url.clone(),
                     cardinal: i,
                     hdrs,
+                    response_hdrs: Vec::new(),
+                    response_body: Vec::new(),
                     stream_id: None,
                     response_writer: None,
                 });
@@ -655,14 +935,19 @@ impl Http3Conn {
             .unwrap(),
             reqs_sent: 0,
             reqs_complete: 0,
+            largest_processed_request: 0,
             reqs,
             body: body.as_ref().map(|b| b.to_vec()),
+            dump_json,
+            dgram_sender,
         };
 
         Box::new(h_conn)
     }
 
-    pub fn with_conn(conn: &mut quiche::Connection) -> Box<dyn HttpConn> {
+    pub fn with_conn(
+        conn: &mut quiche::Connection, dgram_sender: Option<Http3DgramSender>,
+    ) -> Box<dyn HttpConn> {
         let h_conn = Http3Conn {
             h3_conn: quiche::h3::Connection::with_transport(
                 conn,
@@ -671,8 +956,11 @@ impl Http3Conn {
             .unwrap(),
             reqs_sent: 0,
             reqs_complete: 0,
+            largest_processed_request: 0,
             reqs: Vec::new(),
             body: None,
+            dump_json: false,
+            dgram_sender,
         };
 
         Box::new(h_conn)
@@ -826,6 +1114,35 @@ impl HttpConn for Http3Conn {
         }
 
         self.reqs_sent += reqs_done;
+
+        if let Some(ds) = self.dgram_sender.as_mut() {
+            let mut dgrams_done = 0;
+
+            for _ in ds.dgrams_sent..ds.dgram_count {
+                info!(
+                    "sending HTTP/3 DATAGRAM on flow_id={} with data {:?}",
+                    ds.flow_id,
+                    ds.dgram_content.as_bytes()
+                );
+
+                match self.h3_conn.send_dgram(
+                    conn,
+                    0,
+                    ds.dgram_content.as_bytes(),
+                ) {
+                    Ok(v) => v,
+
+                    Err(e) => {
+                        error!("failed to send dgram {:?}", e);
+                        break;
+                    },
+                }
+
+                dgrams_done += 1;
+            }
+
+            ds.dgrams_sent += dgrams_done;
+        }
     }
 
     fn handle_responses(
@@ -839,6 +1156,14 @@ impl HttpConn for Http3Conn {
                         "got response headers {:?} on stream id {}",
                         list, stream_id
                     );
+
+                    let req = self
+                        .reqs
+                        .iter_mut()
+                        .find(|r| r.stream_id == Some(stream_id))
+                        .unwrap();
+
+                    req.response_hdrs = list;
                 },
 
                 Ok((stream_id, quiche::h3::Event::Data)) => {
@@ -855,16 +1180,25 @@ impl HttpConn for Http3Conn {
                             .find(|r| r.stream_id == Some(stream_id))
                             .unwrap();
 
+                        let len = std::cmp::min(
+                            read,
+                            MAX_JSON_DUMP_PAYLOAD - req.response_body.len(),
+                        );
+                        req.response_body.extend_from_slice(&buf[..len]);
+
                         match &mut req.response_writer {
                             Some(rw) => {
                                 rw.write_all(&buf[..read]).ok();
                             },
 
-                            None => {
-                                print!("{}", unsafe {
-                                    std::str::from_utf8_unchecked(&buf[..read])
-                                });
-                            },
+                            None =>
+                                if !self.dump_json {
+                                    print!("{}", unsafe {
+                                        std::str::from_utf8_unchecked(
+                                            &buf[..read],
+                                        )
+                                    });
+                                },
                         }
                     }
                 },
@@ -886,6 +1220,10 @@ impl HttpConn for Http3Conn {
                             req_start.elapsed()
                         );
 
+                        if self.dump_json {
+                            dump_json(&self.reqs);
+                        }
+
                         match conn.close(true, 0x00, b"kthxbye") {
                             // Already closed.
                             Ok(_) | Err(quiche::Error::Done) => (),
@@ -895,6 +1233,26 @@ impl HttpConn for Http3Conn {
 
                         break;
                     }
+                },
+
+                Ok((_flow_id, quiche::h3::Event::Datagram)) => {
+                    let (len, flow_id, flow_id_len) =
+                        self.h3_conn.recv_dgram(conn, buf).unwrap();
+
+                    info!(
+                        "Received DATAGRAM flow_id={} len={} data={:?}",
+                        flow_id,
+                        len,
+                        buf[flow_id_len..len].to_vec()
+                    );
+                },
+
+                Ok((goaway_id, quiche::h3::Event::GoAway)) => {
+                    info!(
+                        "{} got GOAWAY with ID {} ",
+                        conn.trace_id(),
+                        goaway_id
+                    );
                 },
 
                 Err(quiche::h3::Error::Done) => {
@@ -910,7 +1268,7 @@ impl HttpConn for Http3Conn {
         }
     }
 
-    fn report_incomplete(&self, start: &std::time::Instant) {
+    fn report_incomplete(&self, start: &std::time::Instant) -> bool {
         if self.reqs_complete != self.reqs.len() {
             error!(
                 "connection timed out after {:?} and only completed {}/{} requests",
@@ -918,14 +1276,22 @@ impl HttpConn for Http3Conn {
                 self.reqs_complete,
                 self.reqs.len()
             );
+
+            if self.dump_json {
+                dump_json(&self.reqs);
+            }
+
+            return true;
         }
+
+        false
     }
 
     fn handle_requests(
         &mut self, conn: &mut std::pin::Pin<Box<quiche::Connection>>,
         _partial_requests: &mut HashMap<u64, PartialRequest>,
         partial_responses: &mut HashMap<u64, PartialResponse>, root: &str,
-        index: &str, _buf: &mut [u8],
+        index: &str, buf: &mut [u8],
     ) -> quiche::h3::Result<()> {
         // Process HTTP events.
         loop {
@@ -937,6 +1303,9 @@ impl HttpConn for Http3Conn {
                         &list,
                         stream_id
                     );
+
+                    self.largest_processed_request =
+                        std::cmp::max(self.largest_processed_request, stream_id);
 
                     // We decide the response based on headers alone, so
                     // stop reading the request stream so that any body
@@ -1015,6 +1384,27 @@ impl HttpConn for Http3Conn {
 
                 Ok((_stream_id, quiche::h3::Event::Finished)) => (),
 
+                Ok((_, quiche::h3::Event::Datagram)) => {
+                    let (len, flow_id, flow_id_len) =
+                        self.h3_conn.recv_dgram(conn, buf).unwrap();
+
+                    info!(
+                        "Received DATAGRAM flow_id={} data={:?}",
+                        flow_id,
+                        &buf[flow_id_len..len].to_vec()
+                    );
+                },
+
+                Ok((goaway_id, quiche::h3::Event::GoAway)) => {
+                    trace!(
+                        "{} got GOAWAY with ID {} ",
+                        conn.trace_id(),
+                        goaway_id
+                    );
+                    self.h3_conn
+                        .send_goaway(conn, self.largest_processed_request)?;
+                },
+
                 Err(quiche::h3::Error::Done) => {
                     break;
                 },
@@ -1025,6 +1415,35 @@ impl HttpConn for Http3Conn {
                     return Err(e);
                 },
             }
+        }
+
+        if let Some(ds) = self.dgram_sender.as_mut() {
+            let mut dgrams_done = 0;
+
+            for _ in ds.dgrams_sent..ds.dgram_count {
+                info!(
+                    "sending HTTP/3 DATAGRAM on flow_id={} with data {:?}",
+                    ds.flow_id,
+                    ds.dgram_content.as_bytes()
+                );
+
+                match self.h3_conn.send_dgram(
+                    conn,
+                    0,
+                    ds.dgram_content.as_bytes(),
+                ) {
+                    Ok(v) => v,
+
+                    Err(e) => {
+                        error!("failed to send dgram {:?}", e);
+                        break;
+                    },
+                }
+
+                dgrams_done += 1;
+            }
+
+            ds.dgrams_sent += dgrams_done;
         }
 
         Ok(())

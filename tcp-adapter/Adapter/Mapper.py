@@ -35,16 +35,20 @@ class Mapper:
         if abs.seqNumber is None or abs.ackNumber is None:
             return None
 
-        payload = ""
-        if abs.payloadLength is not None:
+        payload = None
+        if abs.payloadLength is not None and abs.payloadLength != 0:
             payload = self.randomPayload(abs.payloadLength)
+
         packet = TCP(flags=abs.flags.asScapy(),
                      sport=self.sourcePort,
                      dport=self.destinationPort,
                      seq=abs.seqNumber,
                      ack=abs.ackNumber)
 
-        return packet/payload
+        if payload is not None:
+            packet = packet / Raw(load=payload)
+
+        return packet
 
     def concreteToAbstract(self, symbol: Packet) -> AbstractSymbol:
         conc = ConcreteSymbol(packet=symbol)
@@ -67,7 +71,7 @@ class Mapper:
         return payload
 
     def reset(self):
-        # self.sourcePort = random.randint(1024, 65535)
+        self.sourcePort = random.randint(1024, 65535)
         self.process.stdin.write(bytearray("RESET" + "\n", 'utf-8'))
         self.process.stdin.flush()
         self.process.stdout.readline().decode("utf-8")

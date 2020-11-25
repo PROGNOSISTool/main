@@ -6,5 +6,5 @@ RUN curl -o /usr/bin/wait-for-it https://raw.githubusercontent.com/vishnubob/wai
 COPY . /code
 WORKDIR /code
 RUN ant -f Mapper/build.xml dist
-
-CMD iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP && wait-for-it implementation:44344 -s -- python3 /code/Adapter/Adapter.py
+WORKDIR /root
+CMD iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP && wait-for-it implementation:44344 -s -- python3 -u /code/Adapter/Adapter.py

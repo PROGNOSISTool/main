@@ -1,21 +1,24 @@
+import json
 import socketserver
 from scapy.all import *
 from scapy.layers.inet import IP
 from scapy.config import conf
 conf.use_pcap= True
 from Mapper import Mapper
-from AbstractSymbol import AbstractSymbol
-from ConcreteSymbol import ConcreteSymbol
+from AbstractSymbol import AbstractSymbol, AbstractOrderedPair
+from ConcreteSymbol import ConcreteSymbol, ConcreteOrderedPair
+from OracleTable import OracleTable
 
 import logging
 logging.basicConfig(level=logging.DEBUG,format='%(name)s: %(message)s')
 
 class Adapter:
     mapper: Mapper = Mapper()
+    oracleTable: OracleTable = OracleTable()
     localAddr: str = socket.gethostbyname(socket.gethostname())
     impAddress: str = socket.gethostbyname('implementation')
-    timeout = 0.5
-    connection = IP(src=localAddr, dst=impAddress)
+    timeout = 0.4
+    connection = IP(src=localAddr, dst=impAddress, flags="DF", version=4)
     logger = logging.getLogger('Adapter')
 
     def reset(self):
@@ -26,40 +29,56 @@ class Adapter:
 
     def handleQuery(self, query: str) -> str:
         answers = []
+        abstractSymbolsIn: [AbstractSymbol] = []
+        concreteSymbolsIn: [AbstractSymbol] = []
+        abstractSymbolsOut: [ConcreteSymbol] = []
+        concreteSymbolsOut: [ConcreteSymbol] = []
         for symbol in query.split(" "):
             self.logger.info("Processing Symbol: " + symbol)
 
-            abstractSymbolIn = AbstractSymbol(string=symbol)
+            abstractSymbolIn: AbstractSymbol = AbstractSymbol(string=symbol)
             self.logger.info("Abstract Symbol In: " + str(abstractSymbolIn))
 
             packetIn = self.mapper.abstractToConcrete(abstractSymbolIn)
+
             if packetIn is None:
-                answers.append(str("TIMEOUT"))
-                continue
-
-            concreteSymbolIn = ConcreteSymbol(packet=packetIn)
-            self.logger.info("Concrete Symbol In: " + concreteSymbolIn.toJSON())
-
-            packetOut = sr1(self.connection/packetIn, timeout=self.timeout)
-
-            concreteSymbolOut = ConcreteSymbol(packet=packetOut)
-            self.logger.info("Concrete Symbol Out: " + concreteSymbolOut.toJSON())
-
-            if packetOut is not None:
-                abstractSymbolOut = self.mapper.concreteToAbstract(packetOut)
-                # Match abstraction level.
-                if abstractSymbolIn.seqNumber is None:
-                    abstractSymbolOut.seqNumber = None
-                if abstractSymbolIn.ackNumber is None:
-                    abstractSymbolOut.ackNumber = None
-                if abstractSymbolIn.payloadLength is None:
-                    abstractSymbolOut.payloadLength = None
+                concreteSymbolIn: ConcreteSymbol = ConcreteSymbol()
+                concreteSymbolOut: ConcreteSymbol = ConcreteSymbol()
+                abstractSymbolOut: AbstractSymbol = AbstractSymbol()
             else:
-                abstractSymbolOut = "TIMEOUT"
+                concreteSymbolIn: ConcreteSymbol = ConcreteSymbol(packet=packetIn)
+                self.logger.info("Concrete Symbol In: " + concreteSymbolIn.toJSON())
 
-            self.logger.info("Abstract Symbol Out: " + str(abstractSymbolOut))
+                packetOut = sr1(self.connection/packetIn, timeout=self.timeout)
+
+                concreteSymbolOut: ConcreteSymbol = ConcreteSymbol(packet=packetOut)
+                self.logger.info("Concrete Symbol Out: " + concreteSymbolOut.toJSON())
+
+                if packetOut is not None:
+                    abstractSymbolOut: AbstractSymbol = self.mapper.concreteToAbstract(packetOut)
+                    # Match abstraction level.
+                    if abstractSymbolIn.seqNumber is None:
+                        abstractSymbolOut.seqNumber = None
+                    if abstractSymbolIn.ackNumber is None:
+                        abstractSymbolOut.ackNumber = None
+                    if abstractSymbolIn.payloadLength is None:
+                        abstractSymbolOut.payloadLength = None
+                else:
+                    concreteSymbolOut.isNull = True
+                    abstractSymbolOut: AbstractSymbol = AbstractSymbol()
+                    abstractSymbolOut.isNull = True
+
+                self.logger.info("Abstract Symbol Out: " + str(abstractSymbolOut))
 
             answers.append(str(abstractSymbolOut))
+
+            abstractSymbolsIn.append(abstractSymbolIn)
+            concreteSymbolsIn.append(concreteSymbolIn)
+            abstractSymbolsOut.append(abstractSymbolOut)
+            concreteSymbolsOut.append(concreteSymbolOut)
+
+        self.oracleTable.add(AbstractOrderedPair(abstractSymbolsIn, abstractSymbolsOut),
+                                ConcreteOrderedPair(concreteSymbolsIn, concreteSymbolsOut))
         return " ".join(answers)
 
 class QueryRequestHandler(socketserver.StreamRequestHandler):
@@ -71,16 +90,20 @@ class QueryRequestHandler(socketserver.StreamRequestHandler):
     def handle(self):
         while True:
             query = self.rfile.readline().strip().decode("utf-8").rstrip("\n")
-            self.logger.info("Received query: " + query)
-            if query == "STOP":
-                break
-            elif query == "RESET":
-                self.server.adapter.reset()
-                self.wfile.write(bytearray("RESET" + "\n", 'utf-8'))
+            if query != "":
+                self.logger.info("Received query: " + query)
+                if query == "STOP":
+                    self.server.adapter.oracleTable.save()
+                    break
+                elif query == "RESET":
+                    self.server.adapter.reset()
+                    self.wfile.write(bytearray("RESET" + "\n", 'utf-8'))
+                else:
+                    answer = self.server.adapter.handleQuery(query)
+                    self.logger.info("Sending answer: " + answer)
+                    self.wfile.write(bytearray(answer + "\n", 'utf-8'))
             else:
-                answer = self.server.adapter.handleQuery(query)
-                self.logger.info("Sending answer: " + answer)
-                self.wfile.write(bytearray(answer + "\n", 'utf-8'))
+                self.wfile.write(bytearray("NIL\n", 'utf-8'))
         return
 
 class AdapterServer(socketserver.TCPServer):

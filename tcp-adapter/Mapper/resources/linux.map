@@ -1,4 +1,4 @@
- ENUM
+ENUM
 absin {VALID, INV}
 ENUM
 abssut {CURRENT, NEXT, ZERO, FRESH}
@@ -9,8 +9,10 @@ STATE
 int learnerSeqProposed = -3;
 int sutSeq = -3;
 int learnerSeq = -3;
+int lastLearnerSeq = -3;
 int lastSeqPlusDataReceived = -3;
 int lastAckReceived = -3;
+flags lastFlagsSent = $;
 
 MAP incomingResponse (flags flagsIn, int concSeqIn, int concAckIn, int concDataIn
 						-> abssut absSeqIn, abslearner absAckIn)
@@ -33,14 +35,17 @@ if ((concAckIn == learnerSeq+1) | (concAckIn == learnerSeqProposed+1)) {
 	absAckIn = abslearner.FRESH;
 }}}
 UPDATE
-if ((flagsIn has $R) | ((learnerSeqProposed != -3) & (concAckIn != learnerSeqProposed+1))) {
+if ((lastFlagsSent has $S) & (lastFlagsSent has $A) & (flagsIn has $R) & (!(flagsIn has $A))) {
+	sutSeq = sutSeq;
+	learnerSeq = learnerSeq;
+} else { if ((flagsIn has $R) | ((learnerSeqProposed != -3) & (concAckIn != learnerSeqProposed+1))) {
 	// upon reset, or if a fresh seq from the learner is not acknowledged
 	sutSeq = -3;
 	learnerSeq = -3;
 } else { if ((learnerSeqProposed != -3) | (concSeqIn == sutSeq+1)) {
 	// if a fresh seq from the learner is acknowledged, or if the sequence number is valid
 	if ((flagsIn has $S) | (flagsIn has $F)) {
-		sutSeq = concSeqIn;
+		sutSeq = concSeqIn + concDataIn;
 	} else { if (flagsIn has $P) {
 		sutSeq = sutSeq + concDataIn;
 	} else {
@@ -58,7 +63,12 @@ if ((flagsIn has $R) | ((learnerSeqProposed != -3) & (concAckIn != learnerSeqPro
 } else {
 	sutSeq = sutSeq;
 	learnerSeq = learnerSeq;
-}}}
+}}}}
+if (learnerSeq != -3) {
+	lastLearnerSeq = learnerSeq;
+} else {
+	lastLearnerSeq = lastLearnerSeq;
+}
 learnerSeqProposed = -3;
 if (flagsIn has $S | flagsIn has $F) {
 	lastSeqPlusDataReceived = concSeqIn + concDataIn + 1;
@@ -66,21 +76,22 @@ if (flagsIn has $S | flagsIn has $F) {
 	lastSeqPlusDataReceived = concSeqIn + concDataIn;
 }
 lastAckReceived = concAckIn;
+lastFlagsSent=$;
 
 MAP outgoingRequest (int concSeqOut, int concAckOut, flags flagsOut, int concDataOut
 						-> absin absSeqOut, absin absAckOut, flags flagsOut2, int absDataOut)
 flagsOut2 = flagsOut;
 absDataOut = concDataOut;
-if (((learnerSeq == -3)
-	| (learnerSeq == concSeqOut))
+if (
+	  (learnerSeq == -3)
+	| (concSeqOut == learnerSeq)
 	| ((flagsOut has $R) & (!(flagsOut has $A)) & (lastAckReceived != 0) & (learnerSeq == -3) & (concSeqOut == lastAckReceived))
 	) {
 	absSeqOut = absin.VALID;
 } else {
 	absSeqOut = absin.INV;
 }
-if ((((sutSeq == -3) & (concAckOut == 0)) | ((sutSeq != -3) & (concAckOut == sutSeq+1)))
-//	| ((lastAckReceived == 0) & (concAckOut == lastSeqPlusDataReceived) & (flagsOut has $R) & (flagsOut has $A))
+if ( ( ((sutSeq == -3) & (concAckOut == 0)) | ((sutSeq != -3) & (concAckOut == sutSeq+1)) )
 	| (!(flagsOut has $A))
 	) {
 	absAckOut = absin.VALID;
@@ -101,14 +112,22 @@ if ((flagsOut has $R) & (absAckOut == absin.VALID) & (absSeqOut == absin.VALID))
 	sutSeq = sutSeq;
 	learnerSeq = learnerSeq;
 }
+if (learnerSeq != -3) {
+	lastLearnerSeq = learnerSeq;
+} else {
+	lastLearnerSeq = lastLearnerSeq;
+}
 lastSeqPlusDataReceived = lastSeqPlusDataReceived;
 lastAckReceived = lastAckReceived;
+lastFlagsSent = flagsOut;
 
 MAP incomingTimeout (int tmp -> int tmp2)
 tmp2 = tmp;
 UPDATE
+lastFlagsSent = $;
 learnerSeqProposed = -3;
 sutSeq = sutSeq;
 learnerSeq = learnerSeq;
+lastLearnerSeq = lastLearnerSeq;
 lastSeqPlusDataReceived = lastSeqPlusDataReceived;
 lastAckReceived = lastAckReceived;

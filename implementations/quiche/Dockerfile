@@ -1,5 +1,5 @@
 # Adapted from https://github.com/cloudflare/quiche/blob/master/Dockerfile
-FROM rust:1.44.1 as build
+FROM rust:1.47 as build
 
 WORKDIR /build
 
@@ -34,7 +34,7 @@ RUN cp ./crypto/rootCA.crt /usr/local/share/ca-certificates/ && update-ca-certif
 ENV PATH="/usr/local/bin/:${PATH}"
 ENV RUST_LOG=info
 
-RUN mkdir web && echo "Hello World!" > web/index.html
+RUN mkdir web && echo "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sit amet semper libero, ac auctor leo." > web/index.html
 
 ENTRYPOINT ["quiche-server"]
 CMD ["--cert", "./crypto/cert.crt", \
@@ -42,6 +42,6 @@ CMD ["--cert", "./crypto/cert.crt", \
     "--name", "quic.tiferrei.com", \
     "--listen", "0.0.0.0:4433", \
     "--root", "./web", \
+    "--dump-packets", "/output", \
     "--no-grease", \
-    "--no-retry", \
-    "--quick-ack"]
+    "--no-retry"]

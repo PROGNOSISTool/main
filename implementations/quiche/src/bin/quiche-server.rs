@@ -54,14 +54,17 @@ Options:
   --max-stream-data BYTES     Per-stream flow control limit [default: 1000000].
   --max-streams-bidi STREAMS  Number of allowed concurrent streams [default: 100].
   --max-streams-uni STREAMS   Number of allowed concurrent streams [default: 100].
+  --idle-timeout TIMEOUT   Idle timeout in milliseconds [default: 30000].
   --dump-packets PATH         Dump the incoming packets as files in the given directory.
   --early-data                Enables receiving early data.
   --no-retry                  Disable stateless retry.
   --no-grease                 Don't send GREASE.
   --http-version VERSION      HTTP version to use [default: all].
+  --dgram-proto PROTO         DATAGRAM application protocol to use [default: none].
+  --dgram-count COUNT         Number of DATAGRAMs to send [default: 0].
+  --dgram-data DATA           Data to send for certain types of DATAGRAM application protocol [default: brrr].
   --cc-algorithm NAME         Specify which congestion control algorithm to use [default: cubic].
   --disable-hystart           Disable HyStart++.
-  --quick-ack                 Send ACKs as soon as possible.
   -h --help                   Show this screen.
 ";
 
@@ -85,6 +88,8 @@ fn main() {
     // Create the UDP listening socket, and register it with the event loop.
     let socket = net::UdpSocket::bind(args.listen).unwrap();
 
+    info!("listening on {:}", socket.local_addr().unwrap());
+
     let socket = mio::net::UdpSocket::from_socket(socket).unwrap();
     poll.register(
         &socket,
@@ -102,8 +107,9 @@ fn main() {
 
     config.set_application_protos(&conn_args.alpns).unwrap();
 
-    config.set_max_idle_timeout(30000);
-    config.set_max_udp_payload_size(MAX_DATAGRAM_SIZE as u64);
+    config.set_max_idle_timeout(conn_args.idle_timeout);
+    config.set_max_recv_udp_payload_size(MAX_DATAGRAM_SIZE);
+    config.set_max_send_udp_payload_size(MAX_DATAGRAM_SIZE);
     config.set_initial_max_data(conn_args.max_data);
     config.set_initial_max_stream_data_bidi_local(conn_args.max_stream_data);
     config.set_initial_max_stream_data_bidi_remote(conn_args.max_stream_data);
@@ -111,10 +117,6 @@ fn main() {
     config.set_initial_max_streams_bidi(conn_args.max_streams_bidi);
     config.set_initial_max_streams_uni(conn_args.max_streams_uni);
     config.set_disable_active_migration(true);
-
-    if conn_args.quick_ack {
-        config.set_max_ack_delay(0);
-    }
 
     let mut keylog = None;
 
@@ -144,6 +146,10 @@ fn main() {
 
     if conn_args.disable_hystart {
         config.enable_hystart(false);
+    }
+
+    if conn_args.dgrams_enabled {
+        config.enable_dgram(true, 1000, 1000);
     }
 
     let rng = SystemRandom::new();
@@ -227,7 +233,7 @@ fn main() {
 
             // Lookup a connection based on the packet's connection ID. If there
             // is no connection matching, create a new one.
-            let (_, client) = if !clients.contains_key(&hdr.dcid) &&
+            let (_, client) = if !clients.contains_key(hdr.dcid.as_ref()) &&
                 !clients.contains_key(conn_id)
             {
                 if hdr.ty != quiche::Type::Initial {
@@ -313,7 +319,8 @@ fn main() {
                 }
 
                 debug!(
-                    "New connection: dcid={} scid={}",
+                    "New connection: src={} dcid={} scid={}",
+                    src,
                     hex_dump(&hdr.dcid),
                     hex_dump(&scid)
                 );
@@ -347,13 +354,15 @@ fn main() {
                     http_conn: None,
                     partial_requests: HashMap::new(),
                     partial_responses: HashMap::new(),
+                    siduck_conn: None,
+                    app_proto_selected: false,
                 };
 
                 clients.insert(scid.to_vec(), (src, client));
 
                 clients.get_mut(&scid[..]).unwrap()
             } else {
-                match clients.get_mut(&hdr.dcid) {
+                match clients.get_mut(hdr.dcid.as_ref()) {
                     Some(v) => v,
 
                     None => clients.get_mut(conn_id).unwrap(),
@@ -372,9 +381,9 @@ fn main() {
 
             trace!("{} processed {} bytes", client.conn.trace_id(), read);
 
-            // Create a new HTTP connection as soon as the QUIC connection
-            // is established.
-            if client.http_conn.is_none() &&
+            // Create a new application protocol session as soon as the QUIC
+            // connection is established.
+            if !client.app_proto_selected &&
                 (client.conn.is_in_early_data() ||
                     client.conn.is_established())
             {
@@ -390,9 +399,32 @@ fn main() {
 
                 if alpns::HTTP_09.contains(app_proto) {
                     client.http_conn = Some(Box::new(Http09Conn::default()));
+
+                    client.app_proto_selected = true;
                 } else if alpns::HTTP_3.contains(app_proto) {
-                    client.http_conn =
-                        Some(Http3Conn::with_conn(&mut client.conn));
+                    let dgram_sender = if conn_args.dgrams_enabled {
+                        Some(Http3DgramSender::new(
+                            conn_args.dgram_count,
+                            conn_args.dgram_data.clone(),
+                            1,
+                        ))
+                    } else {
+                        None
+                    };
+
+                    client.http_conn = Some(Http3Conn::with_conn(
+                        &mut client.conn,
+                        dgram_sender,
+                    ));
+
+                    client.app_proto_selected = true;
+                } else if alpns::SIDUCK.contains(app_proto) {
+                    client.siduck_conn = Some(SiDuckConn::new(
+                        conn_args.dgram_count,
+                        conn_args.dgram_data.clone(),
+                    ));
+
+                    client.app_proto_selected = true;
                 }
             }
 
@@ -417,6 +449,16 @@ fn main() {
                     )
                     .is_err()
                 {
+                    continue 'read;
+                }
+            }
+
+            // If we have a siduck connection, handle the quacks.
+            if client.siduck_conn.is_some() {
+                let conn = &mut client.conn;
+                let si_conn = client.siduck_conn.as_mut().unwrap();
+
+                if si_conn.handle_quacks(conn, &mut buf).is_err() {
                     continue 'read;
                 }
             }
