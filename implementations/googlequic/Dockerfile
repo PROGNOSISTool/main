@@ -22,6 +22,6 @@ RUN ldconfig
 COPY --from=build /root/chromium/src/out/Default/quic_server /usr/bin/
 COPY ./crypto/ /crypto/
 RUN cp /crypto/rootCA.crt /usr/local/share/ca-certificates/ && update-ca-certificates
-COPY ./web/ /web/
+COPY ./quic.tiferrei.com/ /quic.tiferei.com/
 ENTRYPOINT ["/usr/bin/quic_server"]
-CMD ["--certificate_file=/crypto/cert.crt", "--key_file=/crypto/key.pkcs8", "--port=4433", "--v=1", "--quic_ietf_draft", "--quic_response_cache_dir=/web"]
+CMD ["--certificate_file=/crypto/cert.crt", "--key_file=/crypto/key.pkcs8", "--port=4433", "--v=1", "--quic_ietf_draft", "--quic_response_cache_dir=/quic.tiferrei.com"]
