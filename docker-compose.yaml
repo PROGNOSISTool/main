@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: docker.pkg.github.com/ucl-pplv/quic/implementation:googlequic
+    image: docker.pkg.github.com/ucl-pplv/quic/implementation:proxygen
     init: true
     tty: true
     privileged: true
@@ -24,8 +24,8 @@ services:
     environment:
       - HTTP3=1
       - TRACING=0
-      #- WAIT_TIME=400ms
-      #- HTTP_PATH=/100
+      - WAIT_TIME=400ms
+      - HTTP_PATH=/100
     privileged: true
     ports:
       - "3333:3333"
