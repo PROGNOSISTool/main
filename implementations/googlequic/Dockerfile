@@ -13,15 +13,16 @@ RUN gclient runhooks
 RUN gn gen out/Default
 ENV symbol_level=0
 ENV blink_symbol_level=0
-RUN autoninja -C out/Default quic_server
+RUN autoninja -C out/Default quic_server quic_client
 
 FROM ubuntu:18.04 as runtime
 RUN apt-get update && apt-get install -y libglib2.0-0 libnss3 ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=build /root/chromium/src/out/Default/*.so /usr/lib/
 RUN ldconfig
 COPY --from=build /root/chromium/src/out/Default/quic_server /usr/bin/
+COPY --from=build /root/chromium/src/out/Default/quic_client /usr/bin/
 COPY ./crypto/ /crypto/
 RUN cp /crypto/rootCA.crt /usr/local/share/ca-certificates/ && update-ca-certificates
-COPY ./quic.tiferrei.com/ /quic.tiferei.com/
+COPY ./web/ /tmp/quic-data/quic.tiferrei.com/
 ENTRYPOINT ["/usr/bin/quic_server"]
-CMD ["--certificate_file=/crypto/cert.crt", "--key_file=/crypto/key.pkcs8", "--port=4433", "--v=1", "--quic_ietf_draft", "--quic_response_cache_dir=/quic.tiferrei.com"]
+CMD ["--certificate_file=/crypto/cert.crt", "--key_file=/crypto/key.pkcs8", "--port=4433", "--v=1", "--quic_ietf_draft", "--quic_response_cache_dir=/tmp/quic-data/quic.tiferrei.com"]
