@@ -1,5 +1,5 @@
 # Adapted from https://github.com/cloudflare/quiche/blob/master/Dockerfile
-FROM rust:1.47 as build
+FROM rust:1.48 as build
 
 WORKDIR /build
 
