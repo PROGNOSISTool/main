@@ -19,4 +19,4 @@ COPY ./crypto/ /crypto/
 RUN cp /crypto/rootCA.crt /usr/local/share/ca-certificates/ && update-ca-certificates
 RUN mkdir /web && echo "Hello World!" >> /web/index.html
 ENTRYPOINT ["/usr/local/bin/quicinteropserver"]
-CMD ["-listen:0.0.0.0", "-root:/web", "-file:/crypto/cert.crt", "-key:/crypto/cert.key", "-retry:1", "-port:4433"]
+CMD ["-listen:0.0.0.0", "-root:/web", "-file:/crypto/cert.crt", "-key:/crypto/cert.key", "-retry:0", "-port:4433"]
