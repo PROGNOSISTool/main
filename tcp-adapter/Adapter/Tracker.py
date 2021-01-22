@@ -133,7 +133,7 @@ class Tracker(threading.Thread):
 
     def sniffForResponse(self, serverPort, senderPort, waitTime):
         div = waitTime / 10
-        response = None
+        response = ConcreteSymbol()
         # print "sniffing for response ", waitTime
         for i in range(0, 9):
             # print "waiting... ", div
