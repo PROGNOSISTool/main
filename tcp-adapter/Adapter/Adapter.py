@@ -1,12 +1,11 @@
 import json
 import socketserver
 from scapy.all import *
-from scapy.layers.inet import IP
-from scapy.config import conf
-conf.use_pcap= True
+from scapy.layers.inet import IP, TCP
 from Mapper import Mapper
 from AbstractSymbol import AbstractSymbol, AbstractOrderedPair
 from ConcreteSymbol import ConcreteSymbol, ConcreteOrderedPair
+from Tracker import Tracker
 from OracleTable import OracleTable
 
 import logging
@@ -19,6 +18,7 @@ class Adapter:
     impAddress: str = socket.gethostbyname('implementation')
     timeout = 0.4
     connection = IP(src=localAddr, dst=impAddress, flags="DF", version=4)
+    tracker: Tracker = Tracker("eth0", impAddress)
     logger = logging.getLogger('Adapter')
 
     def reset(self):
@@ -49,7 +49,9 @@ class Adapter:
                 concreteSymbolIn: ConcreteSymbol = ConcreteSymbol(packet=packetIn)
                 self.logger.info("Concrete Symbol In: " + concreteSymbolIn.toJSON())
 
-                packetOut = sr1(self.connection/packetIn, timeout=self.timeout)
+                self.tracker.clearLastResponse()
+                send([self.connection/packetIn], iface="eth0", verbose=True)
+                packetOut = self.tracker.sniffForResponse(packetIn[TCP].dport, packetIn[TCP].sport, self.timeout)
 
                 concreteSymbolOut: ConcreteSymbol = ConcreteSymbol(packet=packetOut)
                 self.logger.info("Concrete Symbol Out: " + concreteSymbolOut.toJSON())
@@ -93,6 +95,7 @@ class QueryRequestHandler(socketserver.StreamRequestHandler):
             if query != "":
                 self.logger.info("Received query: " + query)
                 if query == "STOP":
+                    self.server.adapter.tracker.stop()
                     self.server.adapter.oracleTable.save()
                     break
                 elif query == "RESET":
@@ -109,6 +112,7 @@ class QueryRequestHandler(socketserver.StreamRequestHandler):
 class AdapterServer(socketserver.TCPServer):
     def __init__(self, server_address, handler_class=QueryRequestHandler):
         self.adapter = Adapter()
+        self.adapter.tracker.start()
         self.logger = logging.getLogger('Server')
         self.logger.info("Initialising server...")
         socketserver.TCPServer.__init__(self, server_address, handler_class)

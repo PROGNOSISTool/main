@@ -39,7 +39,8 @@ class ConcreteSymbol():
             self.isNull = False
             pattern = re.compile("([A-Z+]+)\(([0-9]+),([0-9]+),([0-9]+)\)")
             capture = pattern.match(string)
-            self.flags = "".join(map(lambda x: x[0], capture.group(1).split("+")))
+            if "+" in self.flags:
+                self.flags = "".join(map(lambda x: x[0], capture.group(1).split("+")))
             self.seqNumber = int(capture.group(2))
             self.ackNumber = int(capture.group(3))
 
