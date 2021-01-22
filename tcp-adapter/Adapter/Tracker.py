@@ -116,6 +116,7 @@ class Tracker(threading.Thread):
             flags += 'A' if tcpPacket.get_ACK() == 1 else ''
             flags += 'U' if tcpPacket.get_URG() == 1 else ''
             payload = tcpPacket.get_data_as_string()
+
             response = ConcreteSymbol(None, flags + "(" + str(tcp_syn) + "," + str(tcp_ack) + "," + str(len(payload)) + ")")
         return response
 

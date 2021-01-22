@@ -51,13 +51,11 @@ class Adapter:
 
                 self.tracker.clearLastResponse()
                 send([self.connection/packetIn], iface="eth0", verbose=True)
-                packetOut = self.tracker.sniffForResponse(packetIn[TCP].dport, packetIn[TCP].sport, self.timeout)
-
-                concreteSymbolOut: ConcreteSymbol = ConcreteSymbol(packet=packetOut)
+                concreteSymbolOut: ConcreteSymbol = self.tracker.sniffForResponse(packetIn[TCP].dport, packetIn[TCP].sport, self.timeout)
                 self.logger.info("Concrete Symbol Out: " + concreteSymbolOut.toJSON())
 
-                if packetOut is not None:
-                    abstractSymbolOut: AbstractSymbol = self.mapper.concreteToAbstract(packetOut)
+                if not concreteSymbolOut.isNull:
+                    abstractSymbolOut: AbstractSymbol = self.mapper.concreteToAbstract(concreteSymbolOut)
                     # Match abstraction level.
                     if abstractSymbolIn.seqNumber is None:
                         abstractSymbolOut.seqNumber = None

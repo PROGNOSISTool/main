@@ -43,6 +43,7 @@ class ConcreteSymbol():
                 self.flags = "".join(map(lambda x: x[0], capture.group(1).split("+")))
             self.seqNumber = int(capture.group(2))
             self.ackNumber = int(capture.group(3))
+            self.payload = "A" * int(capture.group(4))
 
     def __str__(self) -> str:
         if self.isNull:

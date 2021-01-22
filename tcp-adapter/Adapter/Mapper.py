@@ -50,18 +50,14 @@ class Mapper:
 
         return packet
 
-    def concreteToAbstract(self, symbol: Packet) -> AbstractSymbol:
-        conc = ConcreteSymbol(packet=symbol)
-        self.process.stdin.write(bytearray("CONCRETE " + str(conc) + "\n", 'utf-8'))
+    def concreteToAbstract(self, symbol: ConcreteSymbol) -> AbstractSymbol:
+        self.process.stdin.write(bytearray("CONCRETE " + str(symbol) + "\n", 'utf-8'))
         self.process.stdin.flush()
         self.process.stdout.readline().decode("utf-8").rstrip("\n")
-        payloadLength = 0
-        if Raw in symbol:
-            payloadLength = len(symbol[Raw].load)
-        abs = AbstractSymbol(flags=symbol[TCP].flags,
-                             seqNumber=symbol[TCP].seq,
-                             ackNumber=symbol[TCP].ack,
-                             payloadLength=payloadLength)
+        abs = AbstractSymbol(flags=symbol.flags,
+                             seqNumber=symbol.seqNumber,
+                             ackNumber=symbol.ackNumber,
+                             payloadLength=len(symbol.payload))
         return abs
 
     def randomPayload(self, size: int) -> str:
