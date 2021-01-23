@@ -139,8 +139,9 @@ class Tracker(threading.Thread):
             # print "waiting... ", div
             time.sleep(div)
             response = self.getLastResponse(serverPort, senderPort)
-            if not response.isNull:
-                break
+            if response is not None:
+                if not response.isNull:
+                    break
                 # self._received.wait(timeout=waitTime)
         # response = self.getLastResponse(serverPort, senderPort)
         # self._received.clear()
