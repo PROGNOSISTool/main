@@ -21,7 +21,7 @@ class Tracker(threading.Thread):
     promiscuous = False
     readTimeout = 1  # in milliseconds
     isStopped = False
-    lastResponse = None
+    lastResponse = ConcreteSymbol()
     lastResponses = dict()
 
     def __init__(self, interface, serverIp, interfaceType=0, readTimeout=1):
@@ -34,7 +34,7 @@ class Tracker(threading.Thread):
         self.daemon = True
         self.readTimeout = readTimeout
         self.serverIp = serverIp
-        self.lastResponse = None
+        self.lastResponse = ConcreteSymbol()
         self.lastResponses = dict()
         self.responseHistory = set()
 
@@ -95,7 +95,7 @@ class Tracker(threading.Thread):
         return isRet
 
     def processResponse(self, response):
-        if response is not None:
+        if not response.isNull:
             self.lastResponse = response
             if (response.flags == "SA" or response.flags == "AS") and response in self.lastResponses:
                 print('ignoring SA retransmission ' + response.__str__())
@@ -123,7 +123,7 @@ class Tracker(threading.Thread):
     # clears all last responses for all ports (keep that in mind if you have responses on several ports)
     # this is done because when learning, we only care about one port
     def clearLastResponse(self):
-        self.lastResponse = None
+        self.lastResponse = ConcreteSymbol()
         self.lastResponses.clear()
 
     def reset(self):
