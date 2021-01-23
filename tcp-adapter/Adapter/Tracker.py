@@ -104,7 +104,7 @@ class Tracker(threading.Thread):
 
     # MAKE SURE the order of checking/appending characters is the same here as it is in the sender
     def impacketResponseParse(self, tcpPacket):
-        response = None
+        response = ConcreteSymbol()
         if isinstance(tcpPacket, TCP):
             tcp_syn = tcpPacket.get_th_seq()
             tcp_ack = tcpPacket.get_th_ack()
@@ -139,7 +139,7 @@ class Tracker(threading.Thread):
             # print "waiting... ", div
             time.sleep(div)
             response = self.getLastResponse(serverPort, senderPort)
-            if response is not None:
+            if not response.isNull:
                 break
                 # self._received.wait(timeout=waitTime)
         # response = self.getLastResponse(serverPort, senderPort)
