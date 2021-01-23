@@ -24,6 +24,7 @@ class AbstractSymbol:
             self.flags = FlagSet("".join(map(lambda x: x[0], capture.group(1).split("+"))))
             self.seqNumber = int(capture.group(2)) if capture.group(2) != "?" else None
             self.ackNumber = int(capture.group(3)) if capture.group(3) != "?" else None
+            self.payloadLength = int(capture.group(4)) if capture.group(4) != "?" else None
 
     def __str__(self) -> str:
         if self.isNull:
