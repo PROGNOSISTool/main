@@ -139,9 +139,8 @@ class Tracker(threading.Thread):
             # print "waiting... ", div
             time.sleep(div)
             response = self.getLastResponse(serverPort, senderPort)
-            if response is not None:
-                if not response.isNull:
-                    break
+            if not response.isNull:
+                break
                 # self._received.wait(timeout=waitTime)
         # response = self.getLastResponse(serverPort, senderPort)
         # self._received.clear()
@@ -149,8 +148,8 @@ class Tracker(threading.Thread):
 
     # fetches the last response from an active port. If no response was sent, then it returns Timeout
     def getLastResponse(self, serverPort, senderPort):
-        return self.lastResponses.get((serverPort, senderPort))
-
+        return self.lastResponses.get((serverPort, senderPort)) if self.lastResponses.get((serverPort, senderPort)) is not None else ConcreteSymbol()
+        
     def run(self):
         self.trackPackets()
 
