@@ -1,0 +1,26 @@
+learner:
+    runsPerQuery: 3
+    confidence: 85
+    maxAttempts: 100
+    sutPort: 3333
+    sutIP: adapter
+    inputAlphabet:
+        - INITIAL(?,?)[CRYPTO]
+        # - INITIAL(?,?)[ACK,HANDSHAKE_DONE]
+        - HANDSHAKE(?,?)[ACK,CRYPTO]
+        # - HANDSHAKE(?,?)[ACK,HANDSHAKE_DONE]
+        # - SHORT(?,?)[ACK,MAX_DATA,MAX_STREAM_DATA]
+        - SHORT(?,?)[ACK,STREAM]
+        # - SHORT(?,?)[ACK,HANDSHAKE_DONE]
+
+        # - SYN(?,?,0)
+        # - SYN+ACK(?,?,0)
+        # - ACK(?,?,0)
+        # - ACK+PSH(?,?,1)
+        # - FIN+ACK(?,?,0)
+        # - RST(?,?,0)
+        # - ACK+RST(?,?,0)
+adapter:
+    op1: 0
+synthesizer:
+    op1: 0

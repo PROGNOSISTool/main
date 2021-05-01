@@ -21,8 +21,8 @@ services:
   adapter:
     platform: linux/amd64
     build:
-      context: ./adapter
-      #context: ./tcp-adapter
+      context: ./adapter/quic
+      #context: ./adapter/tcp
     environment:
       - HTTP3=1
       - TRACING=0
@@ -43,4 +43,5 @@ services:
     links:
       - adapter
     volumes:
+      - ./config.yaml:/usr/src/learner/config.yaml
       - ./output/learner/:/usr/src/learner/output/

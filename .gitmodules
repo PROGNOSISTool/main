@@ -1,6 +1,3 @@
-[submodule "adapter"]
-	path = adapter
-	url = https://github.com/tiferrei/quic-tracker.git
 [submodule "learner"]
 	path = learner
 	url = git@github.com:UCL-PPLV/tcp-learner.git
