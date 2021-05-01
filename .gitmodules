@@ -7,3 +7,6 @@
 [submodule "adapters/quic"]
 	path = adapters/quic
 	url = https://github.com/tiferrei/quic-tracker.git
+[submodule "paper"]
+	path = paper
+	url = git@github.com:UCL-PPLV/PROGNOSIS-paper.git
