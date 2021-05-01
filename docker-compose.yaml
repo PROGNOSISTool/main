@@ -1,7 +1,8 @@
 version: '3.8'
 services:
   implementation:
-    image: docker.pkg.github.com/ucl-pplv/quic/implementation:proxygen
+    image: docker.pkg.github.com/ucl-pplv/quic/implementation:quiche
+    platform: linux/amd64
     init: true
     tty: true
     privileged: true
@@ -18,6 +19,7 @@ services:
     volumes:
       - ./output/implementation:/output/ 
   adapter:
+    platform: linux/amd64
     build:
       context: ./adapter
       #context: ./tcp-adapter
@@ -25,7 +27,7 @@ services:
       - HTTP3=1
       - TRACING=0
       - WAIT_TIME=400ms
-      - HTTP_PATH=/100
+      - HTTP_PATH=/
     privileged: true
     ports:
       - "3333:3333"
@@ -36,6 +38,7 @@ services:
     sysctls:
       net.ipv4.tcp_syncookies: 0
   learner:
+    platform: linux/amd64
     build: ./learner
     links:
       - adapter
