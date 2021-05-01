@@ -4,3 +4,6 @@
 [submodule "learner"]
 	path = learner
 	url = git@github.com:UCL-PPLV/tcp-learner.git
+[submodule "Synthesis"]
+	path = Synthesis
+	url = git@github.com:hpbrewton/Synthesis.git
