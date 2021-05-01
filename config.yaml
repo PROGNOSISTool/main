@@ -21,6 +21,9 @@ learner:
         # - RST(?,?,0)
         # - ACK+RST(?,?,0)
 adapter:
-    op1: 0
+    http3: 1
+    tracing: 0
+    waitTime: 400ms
+    httpPath: /
 synthesizer:
     op1: 0

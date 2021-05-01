@@ -4,6 +4,3 @@
 [submodule "Synthesis"]
 	path = Synthesis
 	url = git@github.com:hpbrewton/Synthesis.git
-[submodule "adapter/quic"]
-	path = adapter/quic
-	url = https://github.com/tiferrei/quic-tracker.git
