@@ -1,0 +1,6 @@
+upon fresh download adapter does not start (exists after 15 seconds)
+aspell on the README
+remove dead code from Synthesis
+documentation for the Synthesis I/O class
+a copule lines on how to compute trace counts on automata
+figure out some synchronization to know when the learner is done writing for synthesizer to start
