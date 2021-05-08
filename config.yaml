@@ -21,8 +21,11 @@ learner:
         # - RST(?,?,0)
         # - ACK+RST(?,?,0)
 adapter:
-    http3: 1
-    tracing: 0
+    adapterAddress: 0.0.0.0:3333
+    sulAddress: implementation:4433
+    sulName: quic.tiferrei.com
+    http3: true
+    tracing: false
     waitTime: 400ms
     httpPath: /
 synthesizer:

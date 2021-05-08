@@ -28,8 +28,12 @@ learner:
         - SYN+ACK(?,?,0)
         - ACK(?,?,0)
 adapter:
-    http3: 1 # Use HTTP3 (instead of HTTP2).
-    tracing: 0 # Use debug tracing in output.
+    adapter:
+    adapterAddress: 0.0.0.0:3333 # socket to listen on.
+    sulAddress: implementation:4433 # Implementation address.
+    sulName: quic.tiferrei.com # Implementation name (used by QUIC)
+    http3: true # Use HTTP3 (instead of HTTP2).
+    tracing: false # Use debug tracing in output.
     waitTime: 400ms # Period of time to wait for a response from SUL.
     httpPath: / # HTTP base request path to query.
 synthesizer:

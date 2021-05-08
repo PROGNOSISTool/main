@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: docker.pkg.github.com/ucl-pplv/quic/implementation:quiche
+    image: docker.pkg.github.com/ucl-pplv/prognosis/implementation:quiche
     platform: linux/amd64
     init: true
     tty: true
@@ -9,11 +9,6 @@ services:
     ports:
       - "4433:4433/udp"
       - "44344:44344/tcp"
-    environment:
-      - RUST_BACKTRACE=1
-      #- SSLKEYLOGFILE=/output/key
-      #- QLOGDIR=/output
-      #- RUST_LOG=trace
     sysctls:
       net.ipv4.tcp_syncookies: 0
     volumes:
@@ -21,19 +16,15 @@ services:
   adapter:
     platform: linux/amd64
     build:
-      context: ./adapter/quic
-      #context: ./adapter/tcp
-    environment:
-      - HTTP3=1
-      - TRACING=0
-      - WAIT_TIME=400ms
-      - HTTP_PATH=/
+      context: ./adapters/quic
+      #context: ./adapters/tcp
     privileged: true
     ports:
       - "3333:3333"
     links:
       - implementation
     volumes:
+      - ./config.yaml:/root/config.yaml
       - ./output/adapter/:/root
     sysctls:
       net.ipv4.tcp_syncookies: 0
