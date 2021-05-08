@@ -29,4 +29,6 @@ adapter:
     waitTime: 400ms
     httpPath: /
 synthesizer:
-    op1: 0
+    protocol: QUIC
+    dot: quic.dot
+    oracle_table: oracleTable.json
