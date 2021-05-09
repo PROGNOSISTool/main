@@ -8,6 +8,18 @@ learner -> Java based abstract learner.
 ```
 
 ## Getting Started
+#### 0. Preerquisites
+Make sure you have Docker installed in your machine, and an internet connection to fetch/build the required Docker images.
+The source for all images is provided, however you may prefer using the pre-built Docker images for heavy implementations.
+
+This tool has been tested with Docker 20.10.5.
+Apple Silicon support is provided on a best effort basis.
+
+Make sure all git modules are initiated:
+```bash
+git submodule init
+git submodule update
+```
 
 #### 1. Target protocol and implementation
 The various components work together through Docker Compose. By switching the image tag of the implementation container in `docker-compose.yaml`, we can work on different protocols and implementations.
