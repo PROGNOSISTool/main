@@ -57,3 +57,29 @@ We can now start the fully automated learning process with:
 ```
 docker-compose up --remove-orphans
 ```
+
+#### Extra - Running the analysis
+
+```
+docker build -t analysis .
+docker run analysis
+```
+
+### FAQ
+
+#### The learner did not terminate!
+
+This can happen for a variety of reasons. Some are:
+
+##### 1. Non-determinism in oracle query.
+This issue is caught by the error: `SEVERE: Non-determinism found by probablistic oracle for input`.
+This can be caused by several things. The most common is that the implementation being learned is not very stable, and after many queries will get into a non-deterministic state. If this is the case, simply restarting the process (with a fresh implementation container) will solve the issue. Previous queries are cached, so no progress is lost.
+
+If this does not solve the issue then it might be that the waitTime needs to be increased to allow for packets arriving at inconsitent times.
+
+If this still does not solve the issue, the query might indeed be non-deterministic, and thus cannot be learned by a deterministic learner.
+
+##### 2. Incompatible input
+This issue can happen when the answer to a new query is incompatible with the answer to a previous, shorter one. 
+This is usually caused by the number of `minQueries` not being high enough, and thus not correctly capturing non-determinism. The safest option is to increase this parameter in the `config.yaml` and learn from scratch (by deleting the `output` folder and re-running).
+
