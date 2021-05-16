@@ -8,12 +8,14 @@ learner -> Java based abstract learner.
 ```
 
 ## Getting Started
-#### 0. Preerquisites
+#### 0. Prerequisites
 Make sure you have Docker installed in your machine, and an internet connection to fetch/build the required Docker images.
 The source for all images is provided, however you may prefer using the pre-built Docker images for heavy implementations.
 
 This tool has been tested with Docker 20.10.5.
 Apple Silicon support is provided on a best effort basis.
+
+**⚠️  WARNING:** Synthesising rich models can be a memory intensive operations. Ensure Docker runs with at least 8GB of memory, 12GB recommended. 
 
 Make sure all git modules are initiated:
 ```bash
@@ -51,6 +53,8 @@ adapter:
 synthesizer:
     op1: 0
 ```
+
+You will find the appropriate `config.yaml` settings for each model learned in their respective folder in `results`.
 
 #### 3. Learn
 We can now start the fully automated learning process with:

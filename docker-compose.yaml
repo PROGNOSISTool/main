@@ -42,6 +42,6 @@ services:
     platform: linux/amd64
     volumes:
       - ./config.yaml:/code/config.yaml
-      - ./output/learner/final/:/learner/
-      - ./output/adapter/:/adapter/
+      - ./output/learner/final/:/data/learner/
+      - ./output/adapter/:/data/adapter/
 

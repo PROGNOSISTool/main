@@ -30,5 +30,5 @@ adapter:
     httpPath: /index.html
 synthesizer:
     protocol: QUIC
-    dot: /learner/learnresult.dot
-    oracle_table: /adapter/oracleTable.json
+    dot: /data/learner/learnresult.dot
+    oracle_table: /data/adapter/oracleTable.json
