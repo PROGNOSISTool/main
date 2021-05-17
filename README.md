@@ -69,6 +69,10 @@ docker build -t analysis .
 docker run analysis
 ```
 
+#### Counting traces
+
+`Synthesis/det.py` will display the number of traces required for some depth before and after learning.
+
 ### FAQ
 
 #### The learner did not terminate!
