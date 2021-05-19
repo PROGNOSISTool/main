@@ -23,6 +23,8 @@ git submodule init
 git submodule update
 ```
 
+If you would like to repoduce results from the paper, please download them from [this link](https://drive.google.com/drive/folders/1ndo5-Ef7sznxx6xirThF1Exqq9BCZlEE), as they are too big to be held by Git.
+
 #### 1. Target protocol and implementation
 The various components work together through Docker Compose. By switching the image tag of the implementation container in `docker-compose.yaml`, we can work on different protocols and implementations.
 Available protocol adapters: `quic`, `tcp`.

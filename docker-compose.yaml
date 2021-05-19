@@ -40,6 +40,8 @@ services:
   synthesizer:
     image: docker.pkg.github.com/ucl-pplv/prognosis/synthesizer:latest
     platform: linux/amd64
+    links:
+      - adapter
     volumes:
       - ./config.yaml:/code/config.yaml
       - ./output/learner/final/:/data/learner/
