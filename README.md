@@ -62,7 +62,7 @@ We can now start the fully automated learning process with:
 docker-compose up --remove-orphans learner
 ```
 
-#### (Optional) 4. Synthesize
+#### 4. (Optional) Synthesize
 **⚠️  WARNING:** Synthesising rich models can be a memory intensive operations. Ensure Docker runs with at least 8GB of memory, 12GB recommended. 
 
 ```
