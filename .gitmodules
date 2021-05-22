@@ -1,12 +1,12 @@
 [submodule "learner"]
 	path = learner
-	url = git@github.com:UCL-PPLV/tcp-learner.git
+	url = https://github.com/UCL-PPLV/tcp-learner.git
 [submodule "Synthesis"]
 	path = Synthesis
-	url = git@github.com:hpbrewton/Synthesis.git
+	url = https://github.com/hpbrewton/Synthesis.git
 [submodule "adapters/quic"]
 	path = adapters/quic
 	url = https://github.com/tiferrei/quic-tracker.git
 [submodule "paper"]
 	path = paper
-	url = git@github.com:UCL-PPLV/PROGNOSIS-paper.git
+	url = https://github.com/UCL-PPLV/PROGNOSIS-paper.git
