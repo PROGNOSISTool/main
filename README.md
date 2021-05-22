@@ -13,9 +13,7 @@ Make sure you have Docker installed in your machine, and an internet connection 
 The source for all images is provided, however you may prefer using the pre-built Docker images for heavy implementations.
 
 This tool has been tested with Docker 20.10.5.
-Apple Silicon support is provided on a best effort basis.
-
-**⚠️  WARNING:** Synthesising rich models can be a memory intensive operations. Ensure Docker runs with at least 8GB of memory, 12GB recommended. 
+Apple Silicon / ARM support is provided on a best effort basis.
 
 Make sure all git modules are initiated:
 ```bash
@@ -61,10 +59,17 @@ You will find the appropriate `config.yaml` settings for each model learned in t
 #### 3. Learn
 We can now start the fully automated learning process with:
 ```
-docker-compose up --remove-orphans
+docker-compose up --remove-orphans learner
 ```
 
-Any synthesis data can be found in output/synth
+#### (Optional) 4. Synthesize
+**⚠️  WARNING:** Synthesising rich models can be a memory intensive operations. Ensure Docker runs with at least 8GB of memory, 12GB recommended. 
+
+```
+docker-compose up --remove-orphans synthesizer
+```
+
+Do note that the synthesis process purposefuly does not terminate, and is in constant iteration. You will see the iterations starting to be written to `output/synth`, and the process can be stopped at any satisfactory time.
 
 #### Extra - Running the analysis
 
