@@ -46,4 +46,4 @@ services:
       - ./config.yaml:/code/config.yaml
       - ./output/learner/final/:/data/learner/
       - ./output/adapter/:/data/adapter/
-
+      - ./output/synth/:/data/synth/

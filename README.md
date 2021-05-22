@@ -64,12 +64,15 @@ We can now start the fully automated learning process with:
 docker-compose up --remove-orphans
 ```
 
+Any synthesis data can be found in output/synth
+
 #### Extra - Running the analysis
 
 ```
 docker build -t analysis .
 docker run analysis
 ```
+
 
 #### Counting traces
 
