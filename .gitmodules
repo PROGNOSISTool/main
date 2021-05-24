@@ -1,6 +1,6 @@
 [submodule "learner"]
 	path = learner
-	url = https://github.com/UCL-PPLV/tcp-learner.git
+	url = https://github.com/UCL-PPLV/PROGNOSIS-learner.git
 [submodule "Synthesis"]
 	path = Synthesis
 	url = https://github.com/hpbrewton/Synthesis.git
