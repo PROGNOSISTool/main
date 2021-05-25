@@ -24,8 +24,8 @@ services:
     volumes:
       - ./config.yaml:/root/config.yaml
       - ./output/adapter/:/root
-    sysctls:
-      net.ipv4.tcp_syncookies: 0
+    #sysctls:
+      #net.ipv4.tcp_syncookies: 0
   learner:
     build: ./learner
     links:
