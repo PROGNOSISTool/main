@@ -8,8 +8,8 @@ services:
     ports:
       - "4433:4433/udp"
       - "44344:44344/tcp"
-    sysctls:
-      net.ipv4.tcp_syncookies: 0
+    #sysctls:
+      #net.ipv4.tcp_syncookies: 0
     volumes:
       - ./output/implementation:/output/ 
   adapter:
