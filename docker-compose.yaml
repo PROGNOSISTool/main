@@ -2,7 +2,6 @@ version: '3.8'
 services:
   implementation:
     image: ghcr.io/ucl-pplv/prognosis/implementation:quiche
-    platform: linux/amd64
     init: true
     tty: true
     privileged: true
@@ -14,7 +13,6 @@ services:
     volumes:
       - ./output/implementation:/output/ 
   adapter:
-    platform: linux/amd64
     build:
       context: ./adapters/quic
       #context: ./adapters/tcp
@@ -29,7 +27,6 @@ services:
     sysctls:
       net.ipv4.tcp_syncookies: 0
   learner:
-    platform: linux/amd64
     build: ./learner
     links:
       - adapter
@@ -39,7 +36,6 @@ services:
       - ./output/cache/:/usr/src/learner/cache/
   synthesizer:
     build: ./Synthesis
-    platform: linux/amd64
     links:
       - adapter
     volumes:

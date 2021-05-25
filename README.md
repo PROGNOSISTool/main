@@ -13,7 +13,7 @@ Make sure you have Docker installed in your machine, and an internet connection 
 The source for all images is provided, however you may prefer using the pre-built Docker images for heavy implementations.
 
 This tool has been tested with Docker 20.10.5.
-Apple Silicon / ARM support is provided on a best effort basis.
+Apple Silicon / ARM support is provided on a best effort basis, if you'd like to run on ARM with emulation, be sure to add `platform: linux/amd64` to every service in `docker-compose.yaml`.
 
 Make sure all git modules are initiated:
 ```bash
