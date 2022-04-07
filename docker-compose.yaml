@@ -2,6 +2,7 @@ version: '3.8'
 services:
   implementation:
     image: ghcr.io/ucl-pplv/prognosis/implementation:quiche
+    platform: linux/amd64
     init: true
     tty: true
     privileged: true
@@ -17,10 +18,11 @@ services:
       context: ./adapters/quic
       #context: ./adapters/tcp
     privileged: true
+    platform: linux/amd64
+    depends_on:
+      - "implementation"
     ports:
       - "3333:3333"
-    links:
-      - implementation
     volumes:
       - ./config.yaml:/root/config.yaml
       - ./output/adapter/:/root
@@ -28,16 +30,17 @@ services:
       #net.ipv4.tcp_syncookies: 0
   learner:
     build: ./learner
-    links:
-      - adapter
+    platform: linux/amd64
+    depends_on:
+      - "adapter"
     volumes:
       - ./config.yaml:/usr/src/learner/config.yaml
       - ./output/learner/:/usr/src/learner/output/
       - ./output/cache/:/usr/src/learner/cache/
   synthesizer:
     build: ./Synthesis
-    links:
-      - adapter
+    depends_on:
+      - "adapter"
     volumes:
       - ./config.yaml:/code/config.yaml
       - ./output/learner/final/:/data/learner/
