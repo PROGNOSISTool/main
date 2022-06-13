@@ -57,7 +57,7 @@ class Tracker(threading.Thread):
         return self._stop.isSet()
 
     # This is method is called periodically by pcapy
-    def callback(self, user, hdr, data):
+    def callback(self, hdr, data):
         if self.isStopped() == True:
             print("Tracker is stopped.")
             exit(-1)  # results in a strange warning
@@ -163,4 +163,7 @@ class Tracker(threading.Thread):
                               self.promiscuous, self.readTimeout)
         # +" and tcp port " + str(self.serverPort))
         self.pcap.setfilter("tcp and ip src " + str(self.serverIp))
-        a = self.pcap.loop(0, self.callback)
+        while (True):
+            (header, packet) = self.pcap.next()
+            self.callback(header, packet)
+        # a = self.pcap.loop(0, self.callback)
