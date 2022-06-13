@@ -1,6 +1,7 @@
-FROM alpine:3.16.0
-RUN apk add --no-cache --update sudo openjdk13 apache-ant build-base bash busybox-extras libressl-dev libffi-dev python3-dev py3-pip tcpdump libpcap-dev apache-ant iptables curl
-RUN pip3 install --pre "scapy[basic]" pcapy impacket
+FROM openjdk:13-alpine
+RUN apk add --no-cache --update --verbose build-base bash busybox-extras libressl-dev sudo libffi-dev python3-dev py3-pip tcpdump libpcap-dev apache-ant iptables curl && \
+    rm -rf /var/cache/apk/* /tmp/* /sbin/halt /sbin/poweroff /sbin/reboot && \
+    pip3 install --pre "scapy[basic]" pcapy impacket
 RUN curl -o /usr/bin/wait-for-it https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x /usr/bin/wait-for-it
 COPY . /code
 WORKDIR /code
