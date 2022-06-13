@@ -11,6 +11,8 @@ from ConcreteSymbol import ConcreteSymbol
 # It always stores the last response received from the server. The sender tool, in  case scapy did not receive
 # a response, can query the tracker, to see if it did detect a packet. This is useful, since scapy does miss
 # some responses.
+
+
 class Tracker(threading.Thread):
     serverPort = 0
     senderPort = 0
@@ -28,7 +30,8 @@ class Tracker(threading.Thread):
         super(Tracker, self).__init__()
         str(interface)
         self.interface = interface
-        self.decoder = self.getDecoder(interfaceType)  # Wireless not yet supported
+        # Wireless not yet supported
+        self.decoder = self.getDecoder(interfaceType)
         self._stop = threading.Event()
         self._received = threading.Event()
         self.daemon = True
@@ -54,7 +57,7 @@ class Tracker(threading.Thread):
         return self._stop.isSet()
 
     # This is method is called periodically by pcapy
-    def callback(self, hdr, data):
+    def callback(self, user, hdr, data):
         if self.isStopped() == True:
             print("Tracker is stopped.")
             exit(-1)  # results in a strange warning
@@ -77,7 +80,8 @@ class Tracker(threading.Thread):
                     print("ignoring retransmission: ", response.__str__())
                 else:
                     # print "received: ",(tcp_src_port, tcp_dst_port),":",(response.seq, response.ack, response.flags)
-                    self.responseHistory.add(((tcp_src_port, tcp_dst_port), response.seqNumber, response.ackNumber, response.flags))
+                    self.responseHistory.add(
+                        ((tcp_src_port, tcp_dst_port), response.seqNumber, response.ackNumber, response.flags))
                     self.lastResponses[(tcp_src_port, tcp_dst_port)] = response
                     self.lastResponse = response
                     self._received.set()
@@ -117,7 +121,8 @@ class Tracker(threading.Thread):
             flags += 'U' if tcpPacket.get_URG() == 1 else ''
             payload = tcpPacket.get_data_as_string()
 
-            response = ConcreteSymbol(None, flags + "(" + str(tcp_syn) + "," + str(tcp_ack) + "," + str(len(payload)) + ")")
+            response = ConcreteSymbol(
+                None, flags + "(" + str(tcp_syn) + "," + str(tcp_ack) + "," + str(len(payload)) + ")")
         return response
 
     # clears all last responses for all ports (keep that in mind if you have responses on several ports)
@@ -149,11 +154,13 @@ class Tracker(threading.Thread):
     # fetches the last response from an active port. If no response was sent, then it returns Timeout
     def getLastResponse(self, serverPort, senderPort):
         return self.lastResponses.get((serverPort, senderPort)) if self.lastResponses.get((serverPort, senderPort)) is not None else ConcreteSymbol()
-        
+
     def run(self):
         self.trackPackets()
 
     def trackPackets(self):
-        self.pcap = open_live(self.interface, self.max_bytes, self.promiscuous, self.readTimeout)
-        self.pcap.setfilter("tcp and ip src " + str(self.serverIp))  # +" and tcp port " + str(self.serverPort))
+        self.pcap = open_live(self.interface, self.max_bytes,
+                              self.promiscuous, self.readTimeout)
+        # +" and tcp port " + str(self.serverPort))
+        self.pcap.setfilter("tcp and ip src " + str(self.serverIp))
         a = self.pcap.loop(0, self.callback)
