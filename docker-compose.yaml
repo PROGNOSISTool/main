@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: ghcr.io/ucl-pplv/prognosis/implementation:quiche
+    image: ghcr.io/ucl-pplv/prognosis/implementation:tcp
     platform: linux/amd64
     init: true
     tty: true
@@ -9,14 +9,14 @@ services:
     ports:
       - "4433:4433/udp"
       - "44344:44344/tcp"
-    #sysctls:
-      #net.ipv4.tcp_syncookies: 0
+    sysctls:
+      net.ipv4.tcp_syncookies: 0
     volumes:
       - ./output/implementation:/output/ 
   adapter:
     build:
-      context: ./adapters/quic
-      #context: ./adapters/tcp
+      #context: ./adapters/quic
+      context: ./adapters/tcp
     privileged: true
     platform: linux/amd64
     depends_on:
@@ -26,6 +26,10 @@ services:
     volumes:
       - ./config.yaml:/root/config.yaml
       - ./output/adapter/:/root
+      - /lib/modules:/lib/modules
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
     #sysctls:
       #net.ipv4.tcp_syncookies: 0
   learner:
