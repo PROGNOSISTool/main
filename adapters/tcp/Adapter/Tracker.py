@@ -161,9 +161,7 @@ class Tracker(threading.Thread):
     def trackPackets(self):
         self.pcap = open_live(self.interface, self.max_bytes,
                               self.promiscuous, self.readTimeout)
-        # +" and tcp port " + str(self.serverPort))
         self.pcap.setfilter("tcp and ip src " + str(self.serverIp))
         while (True):
             (header, packet) = self.pcap.next()
             self.callback(header, packet)
-        # a = self.pcap.loop(0, self.callback)
