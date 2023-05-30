@@ -1,5 +1,5 @@
 learner:
-    runsPerQuery: 3
+    runsPerQuery: 4
     confidence: 85
     maxAttempts: 100
     sutPort: 3333
@@ -15,14 +15,14 @@ learner:
         - SYN(?,?,0)
         - SYN+ACK(?,?,0)
         - ACK(?,?,0)
-        - ACK+PSH(?,?,1)
-        - FIN+ACK(?,?,0)
-        - RST(?,?,0)
-        - ACK+RST(?,?,0)
+        # - ACK+PSH(?,?,1)
+        # - FIN+ACK(?,?,0)
+        # - RST(?,?,0)
+        # - ACK+RST(?,?,0)
 adapter:
     adapterAddress: 0.0.0.0:3333
     sulAddress: implementation:4433
-    sulName: quic.tiferrei.com
+    sulName: tcp.tiferrei.com
     http3: false
     tracing: false
     waitTime: 400ms

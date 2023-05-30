@@ -12,13 +12,13 @@ services:
     sysctls:
       net.ipv4.tcp_syncookies: 0
     volumes:
-      - ./output/implementation:/output/ 
+      - ./output/implementation:/output/
   adapter:
     build:
       #context: ./adapters/quic
       context: ./adapters/tcp
     privileged: true
-    platform: linux/amd64
+    platform: linux/arm64
     depends_on:
       - "implementation"
     ports:
@@ -30,8 +30,8 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    #sysctls:
-      #net.ipv4.tcp_syncookies: 0
+    sysctls:
+      net.ipv4.tcp_syncookies: 0
   learner:
     build: ./learner
     platform: linux/amd64
