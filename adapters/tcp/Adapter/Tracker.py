@@ -17,7 +17,7 @@ class Tracker(threading.Thread):
     serverPort = 0
     senderPort = 0
     pcap = None
-    interface = 'eth0'
+    interface = "eth0"
     decoder = None
     max_bytes = 1024
     promiscuous = False
@@ -81,30 +81,53 @@ class Tracker(threading.Thread):
                 else:
                     # print "received: ",(tcp_src_port, tcp_dst_port),":",(response.seq, response.ack, response.flags)
                     self.responseHistory.add(
-                        ((tcp_src_port, tcp_dst_port), response.seqNumber, response.ackNumber, response.flags))
+                        (
+                            (tcp_src_port, tcp_dst_port),
+                            response.seqNumber,
+                            response.ackNumber,
+                            response.flags,
+                        )
+                    )
                     self.lastResponses[(tcp_src_port, tcp_dst_port)] = response
                     self.lastResponse = response
                     self._received.set()
 
     def isRetransmit(self, tcp_src_port, tcp_dst_port, response):
-        isRet = ((tcp_src_port, tcp_dst_port), response.seqNumber, response.ackNumber,
-                 response.flags) in self.responseHistory and response.flags.replace("U", "") in ["SA", "AS", "AF", "FA",
-                                                                                                 "S", "P", "PA"]
+        isRet = (
+            (tcp_src_port, tcp_dst_port),
+            response.seqNumber,
+            response.ackNumber,
+            response.flags,
+        ) in self.responseHistory and response.flags.replace("U", "") in [
+            "SA",
+            "AS",
+            "AF",
+            "FA",
+            "S",
+            "P",
+            "PA",
+        ]
         if not isRet:
             if "P" in response.flags and "A" in response.flags and response.payload > 0:
-                for ((src_port, dst_port), seq, ack, flags) in self.responseHistory:
-                    if (src_port, dst_port) == (tcp_src_port, tcp_dst_port) and (
-                            seq == response.seq) and "P" in flags and "A" in flags:
+                for (src_port, dst_port), seq, ack, flags in self.responseHistory:
+                    if (
+                        (src_port, dst_port) == (tcp_src_port, tcp_dst_port)
+                        and (seq == response.seq)
+                        and "P" in flags
+                        and "A" in flags
+                    ):
                         isRet = True
         return isRet
 
     def processResponse(self, response):
         if not response.isNull:
             self.lastResponse = response
-            if (response.flags == "SA" or response.flags == "AS") and response in self.lastResponses:
-                print('ignoring SA retransmission ' + response.__str__())
+            if (
+                response.flags == "SA" or response.flags == "AS"
+            ) and response in self.lastResponses:
+                print("ignoring SA retransmission " + response.__str__())
             else:
-                print('non SA-ret packet:' + response.__str__())
+                print("non SA-ret packet:" + response.__str__())
 
     # MAKE SURE the order of checking/appending characters is the same here as it is in the sender
     def impacketResponseParse(self, tcpPacket):
@@ -113,16 +136,25 @@ class Tracker(threading.Thread):
             tcp_syn = tcpPacket.get_th_seq()
             tcp_ack = tcpPacket.get_th_ack()
 
-            flags = 'F' if tcpPacket.get_FIN() == 1 else ''
-            flags += 'S' if tcpPacket.get_SYN() == 1 else ''
-            flags += 'R' if tcpPacket.get_RST() == 1 else ''
-            flags += 'P' if tcpPacket.get_PSH() == 1 else ''
-            flags += 'A' if tcpPacket.get_ACK() == 1 else ''
-            flags += 'U' if tcpPacket.get_URG() == 1 else ''
+            flags = "F" if tcpPacket.get_FIN() == 1 else ""
+            flags += "S" if tcpPacket.get_SYN() == 1 else ""
+            flags += "R" if tcpPacket.get_RST() == 1 else ""
+            flags += "P" if tcpPacket.get_PSH() == 1 else ""
+            flags += "A" if tcpPacket.get_ACK() == 1 else ""
+            flags += "U" if tcpPacket.get_URG() == 1 else ""
             payload = tcpPacket.get_data_as_string()
 
             response = ConcreteSymbol(
-                None, flags + "(" + str(tcp_syn) + "," + str(tcp_ack) + "," + str(len(payload)) + ")")
+                None,
+                flags
+                + "("
+                + str(tcp_syn)
+                + ","
+                + str(tcp_ack)
+                + ","
+                + str(len(payload))
+                + ")",
+            )
         return response
 
     # clears all last responses for all ports (keep that in mind if you have responses on several ports)
@@ -153,15 +185,20 @@ class Tracker(threading.Thread):
 
     # fetches the last response from an active port. If no response was sent, then it returns Timeout
     def getLastResponse(self, serverPort, senderPort):
-        return self.lastResponses.get((serverPort, senderPort)) if self.lastResponses.get((serverPort, senderPort)) is not None else ConcreteSymbol()
+        return (
+            self.lastResponses.get((serverPort, senderPort))
+            if self.lastResponses.get((serverPort, senderPort)) is not None
+            else ConcreteSymbol()
+        )
 
     def run(self):
         self.trackPackets()
 
     def trackPackets(self):
-        self.pcap = open_live(self.interface, self.max_bytes,
-                              self.promiscuous, self.readTimeout)
+        self.pcap = open_live(
+            self.interface, self.max_bytes, self.promiscuous, self.readTimeout
+        )
         self.pcap.setfilter("tcp and ip src " + str(self.serverIp))
-        while (True):
+        while True:
             (header, packet) = self.pcap.next()
             self.callback(header, packet)
