@@ -21,7 +21,7 @@ git submodule init
 git submodule update
 ```
 
-If you would like to repoduce results from the paper, please download them from [this link](https://drive.google.com/drive/folders/1ndo5-Ef7sznxx6xirThF1Exqq9BCZlEE), as they are too big to be held by Git.
+If you would like to reproduce results from the paper, please download them from [this link](https://drive.google.com/drive/folders/1ndo5-Ef7sznxx6xirThF1Exqq9BCZlEE), as they are too big to be held by Git.
 
 #### 1. Target protocol and implementation
 The various components work together through Docker Compose. By switching the image tag of the implementation container in `docker-compose.yaml`, we can work on different protocols and implementations.
@@ -32,7 +32,7 @@ Available implementation tags: `quiche`, `msquic`, `proxygen`, `googlequic`, `tc
 After that we can fine tune the learning process further. The setting for which are grouped in the root `config.yaml` file. Its syntax is as follows:
 ```yaml
 learner:
-    runsPerQuery: 3 # Minimmum number of runs per query (non-determinism detection).
+    runsPerQuery: 3 # Minimum number of runs per query (non-determinism detection).
     confidence: 85 # Required confidence in query answer for it to be used.
     maxAttempts: 100 # Max attempts per query, after which to declare the system non-det. and terminate.
     sutPort: 3333 # Port used to communicate with the adapter.
@@ -69,7 +69,7 @@ docker-compose up --remove-orphans learner
 docker-compose up --remove-orphans synthesizer
 ```
 
-Do note that the synthesis process purposefuly does not terminate, and is in constant iteration. You will see the iterations starting to be written to `output/synth`, and the process can be stopped at any satisfactory time.
+Do note that the synthesis process purposefully does not terminate, and is in constant iteration. You will see the iterations starting to be written to `output/synth`, and the process can be stopped at any satisfactory time.
 
 #### Extra - Running the analysis
 
@@ -93,7 +93,7 @@ This can happen for a variety of reasons. Some are:
 This issue is caught by the error: `SEVERE: Non-determinism found by probablistic oracle for input`.
 This can be caused by several things. The most common is that the implementation being learned is not very stable, and after many queries will get into a non-deterministic state. If this is the case, simply restarting the process (with a fresh implementation container) will solve the issue. Previous queries are cached, so no progress is lost.
 
-If this does not solve the issue then it might be that the waitTime needs to be increased to allow for packets arriving at inconsitent times.
+If this does not solve the issue then it might be that the waitTime needs to be increased to allow for packets arriving at inconsistent times.
 
 If this still does not solve the issue, the query might indeed be non-deterministic, and thus cannot be learned by a deterministic learner.
 
