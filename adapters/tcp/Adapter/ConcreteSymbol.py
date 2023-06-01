@@ -1,4 +1,5 @@
-import json
+from typing import List
+import jsons
 import re
 
 from scapy.layers.inet import TCP
@@ -6,7 +7,8 @@ from scapy.packet import Packet, Raw
 
 from TCP import FlagSet
 
-class ConcreteSymbol():
+
+class ConcreteSymbol:
     isNull: bool = True
     sourcePort: int = 20
     destinationPort: int = 80
@@ -54,23 +56,31 @@ class ConcreteSymbol():
             seqString = str(self.seqNumber)
             ackString = str(self.ackNumber)
             payloadLenString = str(len(self.payload))
-            return flagsString + "(" + seqString + "," + ackString + "," + payloadLenString + ")"
-
+            return (
+                flagsString
+                + "("
+                + seqString
+                + ","
+                + ackString
+                + ","
+                + payloadLenString
+                + ")"
+            )
 
     def toJSON(self) -> str:
         if self.isNull:
             return "{}"
         else:
-            return json.dumps(self, default=lambda o: o.__dict__)
+            return jsons.dumps(self)
 
 
 class ConcreteOrderedPair:
-    concreteInputs : [ConcreteSymbol] = []
-    concreteOutputs : [ConcreteSymbol] = []
+    concreteInputs: List[ConcreteSymbol] = []
+    concreteOutputs: List[ConcreteSymbol] = []
 
-    def __init__(self, inputs: [ConcreteSymbol], outputs: [ConcreteSymbol]):
+    def __init__(self, inputs: List[ConcreteSymbol], outputs: List[ConcreteSymbol]):
         self.concreteInputs = inputs
         self.concreteOutputs = outputs
 
     def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
+        return jsons.dumps(self)

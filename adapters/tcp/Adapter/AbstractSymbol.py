@@ -1,3 +1,5 @@
+from typing import List
+import jsons
 import re
 from TCP import FlagSet
 
@@ -9,7 +11,14 @@ class AbstractSymbol:
     ackNumber: int = None
     payloadLength: int = None
 
-    def __init__(self, string: str = None, flags: str = None, seqNumber: int = None, ackNumber: int = None, payloadLength: int = None):
+    def __init__(
+        self,
+        string: str = None,
+        flags: str = None,
+        seqNumber: int = None,
+        ackNumber: int = None,
+        payloadLength: int = None,
+    ):
         if flags is not None:
             self.isNull = False
         self.flags = FlagSet(flags)
@@ -22,13 +31,13 @@ class AbstractSymbol:
             capture = pattern.match(string)
             self.isNull = False
             self.flags = FlagSet(
-                "".join(map(lambda x: x[0], capture.group(1).split("+"))))
-            self.seqNumber = int(capture.group(
-                2)) if capture.group(2) != "?" else None
-            self.ackNumber = int(capture.group(
-                3)) if capture.group(3) != "?" else None
-            self.payloadLength = int(capture.group(
-                4)) if capture.group(4) != "?" else None
+                "".join(map(lambda x: x[0], capture.group(1).split("+")))
+            )
+            self.seqNumber = int(capture.group(2)) if capture.group(2) != "?" else None
+            self.ackNumber = int(capture.group(3)) if capture.group(3) != "?" else None
+            self.payloadLength = (
+                int(capture.group(4)) if capture.group(4) != "?" else None
+            )
 
     def __str__(self) -> str:
         if self.isNull:
@@ -37,16 +46,32 @@ class AbstractSymbol:
             flagsString = str(self.flags)
             seqString = "?" if self.seqNumber is None else str(self.seqNumber)
             ackString = "?" if self.ackNumber is None else str(self.ackNumber)
-            payloadLenString = "?" if self.payloadLength is None else str(
-                self.payloadLength)
-            return flagsString + "(" + seqString + "," + ackString + "," + payloadLenString + ")"
+            payloadLenString = (
+                "?" if self.payloadLength is None else str(self.payloadLength)
+            )
+            return (
+                flagsString
+                + "("
+                + seqString
+                + ","
+                + ackString
+                + ","
+                + payloadLenString
+                + ")"
+            )
+
+    def toJSON(self) -> str:
+        if self.isNull:
+            return "{}"
+        else:
+            return jsons.dumps(self)
 
 
 class AbstractOrderedPair:
-    abstractInputs: [AbstractSymbol] = []
-    abstractOutputs: [AbstractSymbol] = []
+    abstractInputs: List[AbstractSymbol] = []
+    abstractOutputs: List[AbstractSymbol] = []
 
-    def __init__(self, inputs: [AbstractSymbol], outputs: [AbstractSymbol]):
+    def __init__(self, inputs: List[AbstractSymbol], outputs: List[AbstractSymbol]):
         self.abstractInputs = inputs
         self.abstractOutputs = outputs
 
@@ -57,3 +82,6 @@ class AbstractOrderedPair:
         aiString = "[{}]".format(", ".join(abstractInputStrings))
         aoString = "[{}]".format(", ".join(concreteInputStrings))
         return "({},{})".format(aiString, aoString)
+
+    def toJSON(self):
+        return jsons.dumps(self)

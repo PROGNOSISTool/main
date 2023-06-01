@@ -1,4 +1,4 @@
-from ast import List
+from typing import List
 import socket
 import socketserver
 import sys
@@ -17,7 +17,9 @@ logging.basicConfig(level=logging.DEBUG, format="%(name)s: %(message)s")
 
 class Adapter:
     mapper: Mapper = Mapper()
-    oracleTable: OracleTable = OracleTable()
+    oracleTable: OracleTable = OracleTable(
+        "postgresql://prognosis:prognosis@database/prognosis"
+    )
     localAddr: str = socket.gethostbyname(socket.gethostname())
     impAddress: str = socket.gethostbyname("implementation")
     timeout = 0.4
@@ -28,7 +30,6 @@ class Adapter:
     def stop(self):
         self.tracker.stop()
         self.mapper.stop()
-        self.oracleTable.save()
 
     def reset(self):
         self.logger.info("Sending RESET...")

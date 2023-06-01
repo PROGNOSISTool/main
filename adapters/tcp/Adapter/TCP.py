@@ -1,4 +1,7 @@
 from enum import Enum
+import json
+import logging
+
 
 class Flag(Enum):
     SYN = "S"
@@ -37,3 +40,9 @@ class FlagSet(set):
         for flag in self:
             flags.append(str(flag))
         return "+".join(sorted(flags))
+
+    def toJSON(self) -> str:
+        flags = []
+        for flag in self:
+            flags.append(str(flag))
+        return json.dumps(sorted(flags))
