@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: ghcr.io/ucl-pplv/prognosis/implementation:tcp
+    image: ghcr.io/prognosistool/implementation/tcp-alpine:latest
     platform: linux/amd64
     init: true
     tty: true
@@ -14,11 +14,9 @@ services:
     volumes:
       - ./output/implementation:/output/
   adapter:
-    build:
-      #context: ./adapters/quic
-      context: ./adapters/tcp
+    image: ghcr.io/prognosistool/adapter/tcp:latest
     privileged: true
-    platform: linux/arm64
+    platform: linux/amd64
     depends_on:
       - "implementation"
     ports:
@@ -33,7 +31,7 @@ services:
     sysctls:
       net.ipv4.tcp_syncookies: 0
   learner:
-    build: ./learner
+    image: ghcr.io/prognosistool/learner:latest
     platform: linux/amd64
     depends_on:
       - "adapter"
