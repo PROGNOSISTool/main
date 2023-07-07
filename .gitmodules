@@ -1,9 +1,3 @@
-[submodule "learner"]
-	path = learner
-	url = https://github.com/UCL-PPLV/PROGNOSIS-learner.git
 [submodule "Synthesis"]
 	path = Synthesis
 	url = https://github.com/hpbrewton/Synthesis.git
-[submodule "adapters/quic"]
-	path = adapters/quic
-	url = https://github.com/tiferrei/quic-tracker.git
