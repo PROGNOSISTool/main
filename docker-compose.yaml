@@ -13,14 +13,27 @@ services:
       net.ipv4.tcp_syncookies: 0
     volumes:
       - ./output/implementation:/output/
+  database:
+    image: postgres:15-alpine
+    platform: linux/amd64
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=prognosis
+      - POSTGRES_DB=prognosis
+      - POSTGRES_USER=prognosis
+    volumes:
+      - ./output/database:/var/lib/postgresql/data/
   adapter:
     image: ghcr.io/prognosistool/adapter/tcp:latest
     privileged: true
     platform: linux/amd64
     depends_on:
       - "implementation"
+      - "database"
     ports:
       - "3333:3333"
+      - "5678:5678"
     volumes:
       - ./config.yaml:/root/config.yaml
       - ./output/adapter/:/root
