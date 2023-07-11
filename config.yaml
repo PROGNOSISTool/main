@@ -20,13 +20,12 @@ learner:
         # - RST(?,?,0)
         # - ACK+RST(?,?,0)
 adapter:
-    adapterAddress: 0.0.0.0:3333
-    sulAddress: implementation:4433
-    sulName: tcp.tiferrei.com
-    http3: false
-    tracing: false
-    waitTime: 400ms
-    httpPath: /index.html
+    port: 3333
+    impAddress: implementation
+    impPort: 44344
+    timeout: 0.4
+    interface: eth0
+    oracleTableURL: postgresql://prognosis:prognosis@database/prognosis
 synthesizer:
     protocol: TCP
     adapter_ip: adapter
