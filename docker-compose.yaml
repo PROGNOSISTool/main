@@ -35,7 +35,7 @@ services:
     volumes:
       - ./output/database:/var/lib/postgresql/data/
   adapter:
-    image: ghcr.io/prognosistool/adapter/tcp:sha-b14f36c
+    image: ghcr.io/prognosistool/adapter/tcp:sha-5740ffa
     privileged: true
     platform: linux/amd64
     depends_on:
