@@ -35,7 +35,7 @@ services:
     volumes:
       - ./output/database:/var/lib/postgresql/data/
   adapter:
-    image: ghcr.io/prognosistool/adapter/tcp:sha-5740ffa
+    image: ghcr.io/prognosistool/adapter/tcp:sha-5b86670
     privileged: true
     platform: linux/amd64
     depends_on:
@@ -66,6 +66,7 @@ services:
       - ./output/learner/:/usr/src/learner/output/
       - ./output/cache/:/usr/src/learner/cache/
   synthesizer:
+    image: ghcr.io/prognosistool/synthesizer:edge
     build: ./Synthesis
     depends_on:
       - "adapter"

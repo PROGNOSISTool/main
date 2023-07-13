@@ -1,12 +1,6 @@
 # PROGNOSIS
 ### Black-Box Analysis of Network Protocol Implementations
 
-```
-implementations -> Different implementations to be learned.
-adapters -> Protocol adapters for alphabet translation.
-learner -> Java based abstract learner.
-```
-
 ## Getting Started
 #### 0. Prerequisites
 Make sure you have Docker installed in your machine, and an internet connection to fetch/build the required Docker images.
@@ -15,18 +9,12 @@ The source for all images is provided, however you may prefer using the pre-buil
 This tool has been tested with Docker 20.10.5.
 Apple Silicon / ARM support is provided on a best effort basis, if you'd like to run on ARM with emulation, be sure to add `platform: linux/amd64` to every service in `docker-compose.yaml`.
 
-Make sure all git modules are initiated:
-```bash
-git submodule init
-git submodule update
-```
-
 If you would like to reproduce results from the paper, please download them from [this link](https://drive.google.com/drive/folders/1ndo5-Ef7sznxx6xirThF1Exqq9BCZlEE), as they are too big to be held by Git.
 
 #### 1. Target protocol and implementation
 The various components work together through Docker Compose. By switching the image tag of the implementation container in `docker-compose.yaml`, we can work on different protocols and implementations.
 Available protocol adapters: `quic`, `tcp`.
-Available implementation tags: `quiche`, `msquic`, `proxygen`, `googlequic`, `tcp`.
+Available implementation tags: `quic-cloudflare`, `quic-microsoft`, `quic-facebook`, `quic-google`, `tcp-docker`, `tcp-smoltcp`.
 
 #### 2. Learning parameters (config.yaml)
 After that we can fine tune the learning process further. The setting for which are grouped in the root `config.yaml` file. Its syntax is as follows:
@@ -59,29 +47,17 @@ You will find the appropriate `config.yaml` settings for each model learned in t
 #### 3. Learn
 We can now start the fully automated learning process with:
 ```
-docker-compose up --remove-orphans learner
+./prognosis learner
 ```
 
 #### 4. (Optional) Synthesize
 **⚠️  WARNING:** Synthesising rich models can be a memory intensive operations. Ensure Docker runs with at least 8GB of memory, 12GB recommended. 
 
 ```
-docker-compose up --remove-orphans synthesizer
+./prognosis synthesizer
 ```
 
 Do note that the synthesis process purposefully does not terminate, and is in constant iteration. You will see the iterations starting to be written to `output/synth`, and the process can be stopped at any satisfactory time.
-
-#### Extra - Running the analysis
-
-```
-docker build -t analysis .
-docker run analysis
-```
-
-
-#### Counting traces
-
-`Synthesis/det.py` will display the number of traces required for some depth before and after learning.
 
 ### FAQ
 
