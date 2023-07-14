@@ -35,7 +35,7 @@ services:
     volumes:
       - ./output/database:/var/lib/postgresql/data/
   adapter:
-    image: ghcr.io/prognosistool/adapter/tcp:sha-5b86670
+    image: adapter
     privileged: true
     platform: linux/amd64
     depends_on:
@@ -57,7 +57,7 @@ services:
       net.ipv4.conf.all.proxy_arp: 1
       net.ipv4.conf.all.arp_filter: 1
   learner:
-    image: ghcr.io/prognosistool/learner:sha-c202d4d
+    image: ghcr.io/prognosistool/learner:sha-f292a0c
     platform: linux/amd64
     depends_on:
       - "adapter"

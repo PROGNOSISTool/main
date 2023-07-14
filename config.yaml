@@ -1,9 +1,12 @@
 learner:
+    framework: MAT
+    algorithm: TTT
+    tester: WP-Method
+    impIP: adapter
+    impPort: 3333
     runsPerQuery: 4
     confidence: 85
     maxAttempts: 100
-    sutPort: 3333
-    sutIP: adapter
     inputAlphabet:
         # - INITIAL(?,?)[CRYPTO]
         # - INITIAL(?,?)[ACK,HANDSHAKE_DONE]
@@ -15,10 +18,10 @@ learner:
         - SYN(?,?,0)
         - SYN+ACK(?,?,0)
         - ACK(?,?,0)
-        # - ACK+PSH(?,?,1)
-        # - FIN+ACK(?,?,0)
-        # - RST(?,?,0)
-        # - ACK+RST(?,?,0)
+        - ACK+PSH(?,?,1)
+        - FIN+ACK(?,?,0)
+        - RST(?,?,0)
+        - ACK+RST(?,?,0)
 adapter:
     port: 3333
     impAddress: implementation
