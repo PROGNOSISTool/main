@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   implementation:
-    image: ghcr.io/prognosistool/implementation/tcp-smoltcp:sha-c9e632a
+    image: ghcr.io/prognosistool/implementation/tcp-docker:sha-918be62
     platform: linux/amd64
     init: true
     tty: true
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./output/database:/var/lib/postgresql/data/
   adapter:
-    image: adapter
+    image: ghcr.io/prognosistool/adapter/tcp:sha-80c35bd
     privileged: true
     platform: linux/amd64
     depends_on:
