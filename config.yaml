@@ -18,7 +18,7 @@ learner:
         - SYN(?,?,0)
         - SYN+ACK(?,?,0)
         - ACK(?,?,0)
-        - ACK+PSH(?,?,1)
+        - ACK+PSH(?,?,16)
         - FIN+ACK(?,?,0)
         - RST(?,?,0)
         - ACK+RST(?,?,0)
