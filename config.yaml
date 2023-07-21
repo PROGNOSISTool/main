@@ -27,6 +27,7 @@ adapter:
     impAddress: implementation
     impPort: 44344
     timeout: 0.4
+    symbolic: true
     interface: eth0
     oracleTableURL: postgresql://prognosis:prognosis@database/prognosis
 synthesizer:
