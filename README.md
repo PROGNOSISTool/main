@@ -9,8 +9,6 @@ The source for all images is provided, however you may prefer using the pre-buil
 This tool has been tested with Docker 20.10.5.
 Apple Silicon / ARM support is provided on a best effort basis, if you'd like to run on ARM with emulation, be sure to add `platform: linux/amd64` to every service in `docker-compose.yaml`.
 
-If you would like to reproduce results from the paper, please download them from [this link](https://drive.google.com/drive/folders/1ndo5-Ef7sznxx6xirThF1Exqq9BCZlEE), as they are too big to be held by Git.
-
 #### 1. Target protocol and implementation
 The various components work together through Docker Compose. By switching the image tag of the implementation container in `docker-compose.yaml`, we can work on different protocols and implementations.
 Available protocol adapters: `quic`, `tcp`.
@@ -51,7 +49,7 @@ We can now start the fully automated learning process with:
 ```
 
 #### 4. (Optional) Synthesize
-**⚠️  WARNING:** Synthesising rich models can be a memory intensive operations. Ensure Docker runs with at least 8GB of memory, 12GB recommended. 
+**⚠️  WARNING:** Synthesising rich models can be a memory intensive operations. Ensure Docker runs with at least 8GB of memory, 12GB recommended.
 
 ```
 ./prognosis synthesizer
@@ -74,6 +72,6 @@ If this does not solve the issue then it might be that the waitTime needs to be 
 If this still does not solve the issue, the query might indeed be non-deterministic, and thus cannot be learned by a deterministic learner.
 
 ##### 2. Incompatible input
-This issue can happen when the answer to a new query is incompatible with the answer to a previous, shorter one. 
+This issue can happen when the answer to a new query is incompatible with the answer to a previous, shorter one.
 This is usually caused by the number of `minQueries` not being high enough, and thus not correctly capturing non-determinism. The safest option is to increase this parameter in the `config.yaml` and learn from scratch (by deleting the `output` folder and re-running).
 
